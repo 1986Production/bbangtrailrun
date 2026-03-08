@@ -1,0 +1,14 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/Accommodation": "pages/Accommodation.html",
+  "/Overview": "pages/Overview.html",
+  "/Registration": "pages/Registration.html",
+  "/Souvenirs": "pages/Souvenirs.html",
+  "/Course": "pages/Course.html",
+  "/Contact": "pages/Contact.html",
+  "/Notice": "pages/Notice.html",
+  "/Services": "pages/Services.html",
+  "/_document": "pages/_document.js",
+  "/404": "pages/404.html"
+}
