@@ -14,8 +14,8 @@ const heroOptions = [
   {
     id: "option-2",
     label: "2안",
-    src: "/images/home-hero-section-v2.png",
-    aspectRatio: "3418 / 2222",
+    src: "/images/home-hero-section-v3.png",
+    aspectRatio: "6836 / 4443",
   },
   {
     id: "option-3",
