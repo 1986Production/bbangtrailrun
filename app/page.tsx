@@ -2,41 +2,9 @@ import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { AccordionItem } from "@/src/components/AccordionItem";
 import AccommodationCalendarSection from "@/src/components/AccommodationCalendarSection";
+import HomeHeroSwitcher from "@/src/components/HomeHeroSwitcher";
 import { notices } from "@/src/data/notices";
 import { ServicesSections } from "@/src/pages/Services";
-
-const Hero = () => (
-  <header
-    data-section="home-hero"
-    className="pt-48 pb-24 px-6 md:px-12 lg:px-24 max-w-[80rem] mx-auto"
-  >
-    <p className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gray-100 text-gray-600 text-xs font-medium uppercase tracking-widest mb-8 m-0">
-      <span className="w-2 h-2 rounded-full bg-gray-400"></span>
-      Boutique Digital Agency
-    </p>
-    <h1 className="tracking-tight leading-[0.95] text-black mb-4">
-      Crafting digital
-      <br />
-      experiences with <em className="italic text-gray-400">soul.</em>
-    </h1>
-    <div className="flex flex-col md:flex-row gap-8 md:items-center justify-between">
-      <p className="text-gray-600 max-w-xl leading-relaxed">
-        We blend strategic thinking with organic design to create meaningful
-        connections between brands and people.
-      </p>
-      <Link
-        href="/#services-sections"
-        className="inline-flex items-center justify-center w-32 h-32 rounded-full border border-black/20 text-black hover:bg-black hover:text-white transition-all duration-500 group"
-      >
-        <p className="text-sm font-medium m-0">Explore</p>
-        <ArrowRight
-          size={16}
-          className="ml-2 transform group-hover:translate-x-1 transition-transform"
-        />
-      </Link>
-    </div>
-  </header>
-);
 
 const SelectedWork = () => {
   const items = [
@@ -528,7 +496,7 @@ const HomeSouvenirsMovedSection = () => {
 export default function HomePage() {
   return (
     <main data-page="home" className="animate-in fade-in duration-1000">
-      <Hero />
+      <HomeHeroSwitcher />
       <SelectedWork />
       <AboutSnippet />
       <Clients />

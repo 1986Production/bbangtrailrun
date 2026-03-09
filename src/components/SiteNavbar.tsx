@@ -95,16 +95,25 @@ const SiteNavbar = () => {
     <nav data-section="site-nav" className="fixed top-0 left-0 right-0 z-50 flex justify-center">
       <div data-block="nav-container" className="relative p-10">
         <div className="flex items-center gap-3 md:gap-4">
+          <div className="inline-flex w-auto items-center text-black shrink-0">
+            <Link
+              href="/"
+              aria-label="빵트레일런 홈"
+              onClick={() => setIsMenuOpen(false)}
+              className="inline-flex h-[54.74px] w-[101.21px] items-center justify-center shrink-0"
+            >
+              <img
+                src="/images/logo_en_v2@3x.png"
+                alt=""
+                aria-hidden="true"
+                className="block h-full w-auto object-contain"
+                referrerPolicy="no-referrer"
+              />
+            </Link>
+          </div>
+
           <div className="liquid-glass-shell inline-flex w-auto rounded-full px-[9.23px] py-[7.37px] items-center gap-6 text-black">
             <div className="flex items-center gap-4 md:gap-6 min-w-0">
-              <Link
-                href="/"
-                aria-label="빵트레일런 홈"
-                onClick={() => setIsMenuOpen(false)}
-                className="shrink-0 h-10 w-10 rounded-full bg-[#A8FF00] text-black flex items-center justify-center text-sm font-bold"
-              >
-                빵
-              </Link>
               <div ref={desktopNavRef} className="hidden lg:flex items-center gap-3 lg:gap-4 relative pb-[3px]">
                 <span
                   aria-hidden="true"
