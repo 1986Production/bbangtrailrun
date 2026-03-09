@@ -51,7 +51,7 @@ const Souvenirs = () => {
             <div className="flex-1">
               <div className="flex justify-center pb-[15px]">
                 <img 
-                  src="/images/티셔츠-사이즈표.png" 
+                  src="/images/tshirt-size-chart.png" 
                   alt="Size Chart Guide" 
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"

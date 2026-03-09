@@ -265,6 +265,12 @@ main[data-page] {
     text-transform: uppercase;
   }
 
+  .typo-h6-caption {
+    font-size: calc(var(--fs-h6) * 0.765);
+    line-height: 1;
+    font-weight: 500;
+  }
+
   .typo-h5 {
     font-size: var(--fs-h5);
     line-height: var(--leading-default);
@@ -949,7 +955,7 @@ html.dark [data-page="overview"] [data-role="location-map-button"] svg {
 }
 
 /* Accommodation calendar: keep vertical grid lines continuous through event rows */
-[data-page="accommodation"] [data-role="accommodation-calendar-event-row"] {
+[data-role="accommodation-calendar-event-row"] {
   background-image: repeating-linear-gradient(
     to right,
     transparent 0,
@@ -959,7 +965,7 @@ html.dark [data-page="overview"] [data-role="location-map-button"] svg {
   );
 }
 
-html.dark [data-page="accommodation"] [data-role="accommodation-calendar-event-row"] {
+html.dark [data-role="accommodation-calendar-event-row"] {
   background-image: repeating-linear-gradient(
     to right,
     transparent 0,

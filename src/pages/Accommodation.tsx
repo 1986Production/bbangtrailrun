@@ -1,7 +1,8 @@
 "use client";
 
-import { Fragment, useEffect, useState } from 'react';
-import { AlertCircle, ArrowDown, ArrowUpRight, MapPin } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { AlertCircle, ArrowDown, ArrowUpRight, MapPin, Minus, Plus } from 'lucide-react';
+import AccommodationCalendarSection from '@/src/components/AccommodationCalendarSection';
 
 const pricingData = [
   { category: '마운틴', type: '마운틴 디럭스 (35평)', prices: ['120,000원', '190,000원', '100,000원'], status: ['green', 'green', 'green'] },
@@ -20,11 +21,21 @@ const pricingData = [
   { category: '그랜드호텔', type: '컨벤션 슈페리어 트윈', prices: ['160,000원', '210,000원', ''], status: ['green', 'green', 'none'] },
 ];
 
-const weekHeader = ['일', '월', '화', '수', '목', '금', '토'];
 const pricingDateHeaders = ['9/11(금)', '9/12(토)', '9/13(일)'];
+const pricingDateHeaderDisplays = pricingDateHeaders.map((label) => `${label} 체크인`);
+const pricingCalendarDays = pricingDateHeaders.map((label) => Number(label.match(/^\d+\/(\d+)/)?.[1] ?? 0));
 const BOOKING_PANEL_COACHMARK_KEY = 'bbangtrailrun-accommodation-booking-coachmark-v1';
 
 type PricingAvailabilityStatus = 'green' | 'red' | 'none';
+type PricingSelection = {
+  rowIndex: number;
+  dateIndex: number;
+  category: string;
+  type: string;
+  dateLabel: string;
+  dateDisplayLabel: string;
+  price: string;
+};
 
 const getPricingStatusMeta = (status: string | undefined) => {
   return {
@@ -42,25 +53,35 @@ const getDateColumnStatus = (columnIndex: number): PricingAvailabilityStatus => 
   return 'green';
 };
 
-type CalendarEventTone = 'event' | 'holiday';
+const getPricingSelection = (rowIndex: number | null, dateIndex: number | null): PricingSelection | null => {
+  if (rowIndex === null || dateIndex === null || dateIndex < 0 || dateIndex >= pricingDateHeaders.length) {
+    return null;
+  }
 
-type CalendarEvent = {
-  label: string;
-  tone: CalendarEventTone;
+  const selectedRow = pricingData[rowIndex];
+  if (!selectedRow) return null;
+
+  const selectedPrice = selectedRow.prices[dateIndex];
+  const selectedStatus = selectedRow.status[dateIndex];
+  if (!selectedPrice || selectedStatus === 'none') return null;
+
+  return {
+    rowIndex,
+    dateIndex,
+    category: selectedRow.category,
+    type: selectedRow.type,
+    dateLabel: pricingDateHeaders[dateIndex],
+    dateDisplayLabel: pricingDateHeaderDisplays[dateIndex],
+    price: selectedPrice,
+  };
 };
 
-type CalendarCell = {
-  day: string;
-  muted?: boolean;
-  events?: CalendarEvent[];
-};
-
-type WeekEventBar = {
-  startCol: number;
-  endCol: number;
-  label: string;
-  tone: CalendarEventTone;
-};
+const buildBookingHref = (selection: PricingSelection | null) =>
+  selection
+    ? `/registration?category=${encodeURIComponent(selection.category)}&type=${encodeURIComponent(selection.type)}&date=${encodeURIComponent(
+        selection.dateLabel
+      )}&price=${encodeURIComponent(selection.price)}`
+    : null;
 
 type LodgingMapType = 'hill' | 'mountain' | 'grand';
 
@@ -76,95 +97,6 @@ type LodgingLocationContent = {
   routeToVenue: string;
   address: string;
   methods: LodgingMethod[];
-};
-
-const septemberCalendar: CalendarCell[][] = [
-  [
-    { day: '30', muted: true },
-    { day: '31', muted: true },
-    { day: '1' },
-    { day: '2' },
-    { day: '3' },
-    { day: '4' },
-    { day: '5' },
-  ],
-  [
-    { day: '6' },
-    { day: '7' },
-    { day: '8' },
-    { day: '9' },
-    { day: '10' },
-    { day: '11', events: [{ label: '행사 일정', tone: 'event' }] },
-    { day: '12', events: [{ label: '행사 일정', tone: 'event' }] },
-  ],
-  [
-    { day: '13', events: [{ label: '행사 일정', tone: 'event' }] },
-    { day: '14' },
-    { day: '15' },
-    { day: '16' },
-    { day: '17' },
-    { day: '18' },
-    { day: '19' },
-  ],
-  [
-    { day: '20' },
-    { day: '21' },
-    { day: '22' },
-    { day: '23' },
-    { day: '24', events: [{ label: '추석', tone: 'holiday' }] },
-    { day: '25', events: [{ label: '추석', tone: 'holiday' }] },
-    { day: '26', events: [{ label: '추석', tone: 'holiday' }] },
-  ],
-  [
-    { day: '27' },
-    { day: '28' },
-    { day: '29' },
-    { day: '30' },
-    { day: '1', muted: true },
-    { day: '2', muted: true },
-    { day: '3', muted: true },
-  ],
-];
-
-const calendarEventToneClass = (tone: CalendarEventTone) => {
-  if (tone === 'event') return 'bg-[#A8FF00] border border-[#A8FF00] text-black';
-  return 'bg-[#FFF4E8] border border-[#FFD099] text-[#FF9000]';
-};
-
-const weekdayClass = (index: number) => {
-  if (index === 0) return 'text-[#FF9000]';
-  if (index === 6) return 'text-[#FF9000]';
-  return 'text-gray-500';
-};
-
-const buildWeekEventBars = (week: CalendarCell[]): WeekEventBar[] => {
-  const bars: WeekEventBar[] = [];
-  let cursor = 0;
-
-  while (cursor < week.length) {
-    const event = week[cursor].events?.[0];
-    if (!event) {
-      cursor += 1;
-      continue;
-    }
-
-    let endCol = cursor;
-    while (endCol + 1 < week.length) {
-      const nextEvent = week[endCol + 1].events?.[0];
-      if (!nextEvent || nextEvent.label !== event.label || nextEvent.tone !== event.tone) break;
-      endCol += 1;
-    }
-
-    bars.push({
-      startCol: cursor,
-      endCol,
-      label: event.label,
-      tone: event.tone,
-    });
-    cursor = endCol + 1;
-  }
-
-  return bars;
 };
 
 const lodgingLocationContent: Record<LodgingMapType, LodgingLocationContent> = {
@@ -225,44 +157,110 @@ const Accommodation = () => {
     row: null,
     col: null,
   });
+  const [mobileSelectedDateIndex, setMobileSelectedDateIndex] = useState(0);
+  const [hasMobileDateSelection, setHasMobileDateSelection] = useState(false);
+  const [mobileSelectedRoomIndex, setMobileSelectedRoomIndex] = useState<number | null>(null);
+  const [isMobileDateAccordionOpen, setIsMobileDateAccordionOpen] = useState(false);
+  const [isMobileRoomAccordionOpen, setIsMobileRoomAccordionOpen] = useState(false);
   const [isBookingPanelVisible, setIsBookingPanelVisible] = useState(false);
   const [isBookingPanelAttention, setIsBookingPanelAttention] = useState(false);
-  const visibleCalendarWeeks = septemberCalendar.filter((week) =>
-    week.some((cell) => !cell.muted || (cell.events?.length ?? 0) > 0)
-  );
   const activeLodgingLocation = lodgingLocationContent[mapType];
   const dateColumnStatuses = pricingDateHeaders.map((_, index) => getDateColumnStatus(index));
-  const selectedPricing =
-    activePricingCell.row !== null &&
-    activePricingCell.col !== null &&
-    activePricingCell.col >= 2 &&
-    activePricingCell.col <= 4
-      ? (() => {
-          const selectedRow = pricingData[activePricingCell.row];
-          if (!selectedRow) return null;
-
-          const priceIndex = activePricingCell.col - 2;
-          const selectedPrice = selectedRow.prices[priceIndex];
-          const selectedStatus = selectedRow.status[priceIndex];
-          if (!selectedPrice || selectedStatus === 'none') return null;
-
-          return {
-            category: selectedRow.category,
-            type: selectedRow.type,
-            dateLabel: pricingDateHeaders[priceIndex],
-            price: selectedPrice,
-          };
-        })()
-      : null;
-  const selectedBookingHref = selectedPricing
-    ? `/registration?category=${encodeURIComponent(selectedPricing.category)}&type=${encodeURIComponent(selectedPricing.type)}&date=${encodeURIComponent(
-        selectedPricing.dateLabel
-      )}&price=${encodeURIComponent(selectedPricing.price)}`
+  const selectedPricing = getPricingSelection(
+    activePricingCell.row,
+    activePricingCell.col !== null ? activePricingCell.col - 2 : null
+  );
+  const selectedBookingHref = buildBookingHref(selectedPricing);
+  const mobileSelectedPricing = hasMobileDateSelection
+    ? getPricingSelection(mobileSelectedRoomIndex, mobileSelectedDateIndex)
     : null;
+  const mobileSelectedBookingHref = buildBookingHref(mobileSelectedPricing);
+  const mobileDateOptions = pricingDateHeaders.map((dateLabel, index) => {
+    const availableCount = pricingData.filter((_, rowIndex) => getPricingSelection(rowIndex, index)).length;
+    const match = /^(\d+\/\d+)\((.+)\)$/.exec(dateLabel);
+
+    return {
+      dateIndex: index,
+      displayLabel: pricingDateHeaderDisplays[index],
+      monthDay: match?.[1] ?? dateLabel,
+      weekday: match?.[2] ?? '',
+      availableCount,
+    };
+  });
+  const mobilePricingRows = pricingData.map((row, rowIndex) => ({
+    row,
+    rowIndex,
+    selection: hasMobileDateSelection ? getPricingSelection(rowIndex, mobileSelectedDateIndex) : null,
+  }));
+  const selectedCalendarCheckInDay = hasMobileDateSelection ? pricingCalendarDays[mobileSelectedDateIndex] ?? null : null;
+  const selectedCalendarCheckOutDay = selectedCalendarCheckInDay !== null ? selectedCalendarCheckInDay + 1 : null;
   const getPricingCrossHighlightClass = (isRowActive: boolean, isColActive: boolean) => {
     if (isRowActive && isColActive) return 'bg-black/[0.08]';
     if (isRowActive || isColActive) return 'bg-black/[0.04]';
     return '';
+  };
+
+  const handleMobileDateSelect = (dateIndex: number) => {
+    if (hasMobileDateSelection && mobileSelectedDateIndex === dateIndex) {
+      setHasMobileDateSelection(false);
+      setMobileSelectedRoomIndex(null);
+      setActivePricingCell({ row: null, col: null });
+      setIsMobileDateAccordionOpen(false);
+      setIsMobileRoomAccordionOpen(false);
+      return;
+    }
+
+    const nextSelection = getPricingSelection(mobileSelectedRoomIndex, dateIndex);
+
+    setMobileSelectedDateIndex(dateIndex);
+    setHasMobileDateSelection(true);
+    setIsMobileDateAccordionOpen(false);
+    setIsMobileRoomAccordionOpen(false);
+
+    if (nextSelection) {
+      setActivePricingCell({ row: nextSelection.rowIndex, col: nextSelection.dateIndex + 2 });
+      return;
+    }
+
+    if (
+      mobileSelectedRoomIndex !== null &&
+      activePricingCell.row === mobileSelectedRoomIndex &&
+      activePricingCell.col === mobileSelectedDateIndex + 2
+    ) {
+      setActivePricingCell({ row: null, col: null });
+    }
+
+    setMobileSelectedRoomIndex(null);
+  };
+
+  const handleMobileRoomToggle = (rowIndex: number) => {
+    if (!hasMobileDateSelection) {
+      setIsMobileDateAccordionOpen(true);
+      setIsMobileRoomAccordionOpen(false);
+      return;
+    }
+
+    const nextSelection = getPricingSelection(rowIndex, mobileSelectedDateIndex);
+    if (!nextSelection) return;
+
+    if (mobileSelectedRoomIndex === rowIndex) {
+      setMobileSelectedRoomIndex(null);
+      setIsMobileRoomAccordionOpen(true);
+      if (activePricingCell.row === rowIndex && activePricingCell.col === mobileSelectedDateIndex + 2) {
+        setActivePricingCell({ row: null, col: null });
+      }
+      return;
+    }
+
+    setMobileSelectedRoomIndex(rowIndex);
+    setIsMobileRoomAccordionOpen(false);
+    setActivePricingCell({ row: rowIndex, col: mobileSelectedDateIndex + 2 });
+  };
+
+  const handleCalendarDateSelect = (day: number) => {
+    const dateIndex = pricingCalendarDays.indexOf(day);
+    if (dateIndex === -1) return;
+    handleMobileDateSelect(dateIndex);
   };
 
   useEffect(() => {
@@ -293,8 +291,7 @@ const Accommodation = () => {
 
   return (
     <main data-page="accommodation" className="animate-in fade-in duration-1000 bg-white">
-      
-      {/* Intro & Calendar Section */}
+      {/* Pricing Table Section */}
       <section className="page-section-nav max-w-[80rem] mx-auto px-6 md:px-12 lg:px-24 pb-32">
         <div className="rounded-[2rem] text-center mb-[30px]">
           <h1 className="tracking-tight text-black mb-[15px] heading-ko">하이원 예약</h1>
@@ -304,105 +301,18 @@ const Accommodation = () => {
             예약 일정과 객실 정보를 확인해 주세요.
           </p>
         </div>
-
-
-          <h2 className="heading-ko mb-[15px]">9월 달력</h2>
-        <div className="rounded-[2rem] transition-colors" data-role="accommodation-calendar">
-          <div className="overflow-x-auto rounded-[1.5rem] border border-gray-200" data-role="accommodation-calendar-shell">
-            <table className="w-full min-w-[46rem] table-fixed border-collapse" data-role="accommodation-calendar-table">
-              <thead>
-                <tr className="bg-[#F5F5F5]" data-role="accommodation-calendar-head-row">
-                  {weekHeader.map((day, dayIndex) => (
-                    <th
-                      key={day}
-                      data-role="accommodation-calendar-head-cell"
-                      className={`border-b border-gray-200 px-3 py-3 text-center typo-h6-bold ${weekdayClass(dayIndex)}`}
-                    >
-                      {day}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {visibleCalendarWeeks.map((week, rowIndex) => {
-                  const weekEventBars = buildWeekEventBars(week);
-                  const hasEventBars = weekEventBars.length > 0;
-                  const isLastVisibleWeek = rowIndex === visibleCalendarWeeks.length - 1;
-
-                  return (
-                    <Fragment key={`week-${rowIndex}`}>
-                      <tr key={`week-days-${rowIndex}`}>
-                        {week.map((cell, colIndex) => (
-                          <td
-                            key={`cell-${rowIndex}-${colIndex}`}
-                            data-role="accommodation-calendar-day-cell"
-                            data-muted={cell.muted ? 'true' : 'false'}
-                            className={`h-16 align-top px-2 py-2 md:h-20 md:px-3 md:py-3 ${
-                              colIndex !== weekHeader.length - 1 ? 'border-r border-gray-200' : ''
-                            } ${!hasEventBars && !isLastVisibleWeek ? 'border-b border-gray-200' : ''} ${
-                              cell.muted ? 'bg-gray-50 text-gray-400' : 'bg-white text-black'
-                            }`}
-                          >
-                            <div className="flex justify-end">
-                              {!cell.muted ? (
-                                <span data-role="accommodation-calendar-day-badge" className="inline-flex min-w-7 items-center justify-center rounded-full border border-gray-200 bg-gray-100 px-2 py-0.5 typo-h6-bold text-black">
-                                  {cell.day}
-                                </span>
-                              ) : null}
-                            </div>
-                          </td>
-                        ))}
-                      </tr>
-                      {hasEventBars ? (
-                        <tr key={`week-events-${rowIndex}`}>
-                          <td
-                            colSpan={7}
-                            data-role="accommodation-calendar-event-row"
-                            className={`overflow-hidden p-0 ${!isLastVisibleWeek ? 'border-b border-gray-200' : ''}`}
-                          >
-                            <div className="grid grid-cols-7 py-2 md:py-3">
-                              {weekEventBars.map((bar) => (
-                                <span
-                                  key={`bar-${rowIndex}-${bar.startCol}-${bar.endCol}-${bar.label}`}
-                                  data-role="accommodation-calendar-event-bar"
-                                  style={{ gridColumn: `${bar.startCol + 1} / ${bar.endCol + 2}` }}
-                                  className={`mx-auto inline-flex h-7 w-[calc(100%-0.605rem)] min-w-0 items-center gap-1.5 overflow-hidden rounded-lg px-2.5 typo-h6-medium leading-none md:w-[calc(100%-0.9075rem)] ${calendarEventToneClass(bar.tone)}`}
-                                >
-                                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-                                  {bar.label}
-                                </span>
-                              ))}
-                            </div>
-                          </td>
-                        </tr>
-                      ) : null}
-                    </Fragment>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          <p className="typo-h6-medium text-gray-400 mt-6 flex items-center gap-2">
-            <AlertCircle size={16} />
-            상기 내용은 운영 상황에 따라 일부 변경될 수 있습니다.
-          </p>
-        </div>
-      </section>
-
-      {/* Pricing Table Section */}
-      <section className="max-w-[80rem] mx-auto px-6 md:px-12 lg:px-24 pb-32">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-0 lg:gap-4 mb-[15px]">
           <div>
             <h2 className="heading-ko">객실 요금 및 예약</h2>
           </div>
-          <div className="mt-6 lg:mt-0 flex items-center typo-h6-medium text-gray-500" data-role="pricing-status">
+          <div className="mt-6 hidden items-center typo-h6-medium text-gray-500 md:flex lg:mt-0" data-role="pricing-status">
             <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-3 py-1.5" data-role="pricing-status-pill">
               <span className="w-2 h-2 rounded-full bg-black/70" data-role="pricing-status-dot"></span>
               현재 판매전
             </span>
           </div>
         </div>
-        <div>
+        <div className="hidden md:block">
           <div className="overflow-x-auto rounded-[1.25rem] border border-black/10 bg-white">
             <table
               className="w-full min-w-[46rem] text-left whitespace-nowrap font-[var(--font-body)] text-[var(--fs-body)] leading-[var(--leading-default)] text-gray-500"
@@ -422,7 +332,7 @@ const Accommodation = () => {
                   >
                     타입
                   </th>
-                  {pricingDateHeaders.map((dateHeader, dateIndex) => {
+                  {pricingDateHeaderDisplays.map((dateHeader, dateIndex) => {
                     const tableCol = dateIndex + 2;
                     const headerStatusMeta = getPricingStatusMeta(dateColumnStatuses[dateIndex]);
                     return (
@@ -535,10 +445,21 @@ const Accommodation = () => {
             </table>
           </div>
         </div>
-        <p className="typo-h6-medium text-gray-400 mt-6 flex items-center gap-2">
+        <p className="typo-h6-medium mt-6 hidden items-center gap-2 text-gray-400 md:flex">
           <AlertCircle size={16} />
           객실 요금 및 재고는 운영 상황에 따라 변경될 수 있습니다.
         </p>
+
+        <div className="md:hidden">
+          <AccommodationCalendarSection
+            embedded
+            selectableDays={pricingCalendarDays}
+            selectedCheckInDay={selectedCalendarCheckInDay}
+            selectedCheckOutDay={selectedCalendarCheckOutDay}
+            onSelectDay={handleCalendarDateSelect}
+          />
+        </div>
+
       </section>
 
       <div
@@ -558,13 +479,13 @@ const Accommodation = () => {
           </span>
         </div>
         <div
-          className={`rounded-[2rem] border border-black/5 bg-[#F5F5F5] p-5 md:p-6 transition-shadow duration-300 ${
+          className={`rounded-[2rem] border border-black/5 bg-[#F5F5F5] p-5 md:p-6 transition-shadow duration-300 max-h-[70vh] overflow-y-auto md:max-h-none md:overflow-visible ${
             isBookingPanelAttention
               ? 'animate-pulse shadow-[0_0_0_2px_rgba(0,0,0,0.08),0_12px_34px_rgba(0,0,0,0.08)]'
               : 'shadow-[0_8px_30px_rgb(0,0,0,0.04)]'
           }`}
         >
-          <div className="mb-[15px] grid grid-cols-2 gap-2.5">
+          <div className="mb-[15px] hidden grid-cols-2 gap-2.5 md:grid">
             <div
               className={`rounded-xl border px-3 py-2.5 text-center transition-all ${
                 selectedPricing
@@ -587,39 +508,236 @@ const Accommodation = () => {
             </div>
           </div>
 
-          {selectedPricing ? (
-            <>
-              <p className="m-0 typo-h6-medium text-gray-500">
-                {selectedPricing.category} · {selectedPricing.type}
-              </p>
-              <p className="m-0 mt-1 typo-body-bold text-black">
-                {selectedPricing.dateLabel} · {selectedPricing.price}
-              </p>
-            </>
-          ) : (
-            <>
-              <p className="m-0 typo-h6-medium text-gray-500">가격 셀을 선택해 객실을 고르세요.</p>
-              <p className="m-0 mt-1 typo-body-bold text-black">선택된 객실 없음</p>
-            </>
-          )}
+          <div className="md:hidden">
+            <div className="space-y-3">
+              <div className="overflow-hidden rounded-[1.5rem] border border-black/10 bg-white">
+                <button
+                  type="button"
+                  onClick={() => setIsMobileDateAccordionOpen((prev) => !prev)}
+                  className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="m-0 typo-body-bold text-black">체크인 날짜 선택</p>
+                    {hasMobileDateSelection ? (
+                      <p className="m-0 mt-2 typo-h6-medium text-gray-500">
+                        {pricingDateHeaderDisplays[mobileSelectedDateIndex]} · 1박 · 익일 11시 체크아웃
+                      </p>
+                    ) : null}
+                  </div>
+                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-black/10 bg-[#F5F5F5] text-black">
+                    {isMobileDateAccordionOpen ? <Minus size={16} aria-hidden="true" /> : <Plus size={16} aria-hidden="true" />}
+                  </span>
+                </button>
 
-          {selectedBookingHref ? (
-            <a
-              href={selectedBookingHref}
-              className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-black text-white py-3 typo-h6-medium"
-            >
-              선택한 객실 예약하기
-              <ArrowUpRight size={16} aria-hidden="true" />
-            </a>
-          ) : (
-            <button
-              type="button"
-              disabled
-              className="mt-3 inline-flex w-full items-center justify-center rounded-xl bg-gray-200 text-gray-400 py-3 typo-h6-medium"
-            >
-              선택한 객실 예약하기
-            </button>
-          )}
+                {isMobileDateAccordionOpen ? (
+                  <div className="border-t border-black/10 px-4 pb-4 pt-3">
+                    <div className="grid grid-cols-3 gap-2">
+                      {mobileDateOptions.map((option) => {
+                        const isSelected = hasMobileDateSelection && mobileSelectedDateIndex === option.dateIndex;
+
+                        return (
+                          <button
+                            key={option.displayLabel}
+                            type="button"
+                            onClick={() => handleMobileDateSelect(option.dateIndex)}
+                            className={`rounded-[1.25rem] border px-3 py-3 text-left transition-all ${
+                              isSelected
+                                ? 'border-black bg-black text-white shadow-[0_10px_24px_rgba(0,0,0,0.12)]'
+                                : 'border-black/10 bg-[#F5F5F5] text-gray-500'
+                            }`}
+                          >
+                            <p className={`m-0 typo-h6-label ${isSelected ? 'text-white/65' : 'text-gray-400'}`}>
+                              {option.weekday}요일
+                            </p>
+                            <p className="m-0 mt-2 typo-h5-bold text-current">{option.monthDay}</p>
+                            <p className={`m-0 mt-1 typo-h6-medium ${isSelected ? 'text-white/70' : 'text-gray-400'}`}>
+                              체크인
+                            </p>
+                            <p className={`m-0 mt-3 typo-h6-medium ${isSelected ? 'text-white' : 'text-gray-500'}`}>
+                              {option.availableCount}개 객실
+                            </p>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+
+              <div className="overflow-hidden rounded-[1.5rem] border border-black/10 bg-white">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!hasMobileDateSelection) {
+                      setIsMobileDateAccordionOpen(true);
+                      setIsMobileRoomAccordionOpen(false);
+                      return;
+                    }
+
+                    setIsMobileRoomAccordionOpen((prev) => !prev);
+                  }}
+                  className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="m-0 typo-body-bold text-black">객실 타입 선택</p>
+                    {mobileSelectedPricing ? (
+                      <p className="m-0 mt-2 typo-h6-medium text-gray-500">
+                        {mobileSelectedPricing.category} · {mobileSelectedPricing.type}
+                      </p>
+                    ) : null}
+                  </div>
+                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-black/10 bg-[#F5F5F5] text-black">
+                    {isMobileRoomAccordionOpen ? <Minus size={16} aria-hidden="true" /> : <Plus size={16} aria-hidden="true" />}
+                  </span>
+                </button>
+
+                {isMobileRoomAccordionOpen ? (
+                  <div className="border-t border-black/10 px-4 pb-4 pt-3">
+                    <div className="space-y-3">
+                      {mobilePricingRows.map(({ row, rowIndex, selection }) => {
+                        const isSelected = mobileSelectedRoomIndex === rowIndex;
+                        const isAvailable = Boolean(selection);
+
+                        return (
+                          <button
+                            key={`mobile-pricing-${row.category}-${row.type}`}
+                            type="button"
+                            disabled={!isAvailable}
+                            onClick={() => handleMobileRoomToggle(rowIndex)}
+                            className={`w-full rounded-[1.25rem] border p-4 text-left transition-all ${
+                              isSelected
+                                ? 'border-black bg-black text-white shadow-[0_14px_30px_rgba(0,0,0,0.12)]'
+                                : isAvailable
+                                  ? 'border-black/10 bg-[#F5F5F5] text-black'
+                                  : 'border-black/5 bg-gray-50 text-gray-300 opacity-60'
+                            }`}
+                          >
+                            <div className="space-y-4">
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="flex min-w-0 flex-wrap items-center gap-2">
+                                  <span
+                                    className={`inline-flex items-center rounded-full px-2.5 py-1 typo-h6-medium ${
+                                      isSelected
+                                        ? 'border border-white/15 bg-white/10 text-white'
+                                        : 'border border-black/10 bg-white text-gray-500'
+                                    }`}
+                                  >
+                                    {row.category}
+                                  </span>
+                                </div>
+
+                                <div className="shrink-0">
+                                  {isAvailable ? (
+                                    <span
+                                      className={
+                                        isSelected
+                                          ? 'inline-flex items-center rounded-full border border-white/15 bg-white/10 px-2.5 py-1 typo-h6-medium text-white'
+                                          : getPricingStatusMeta(row.status[mobileSelectedDateIndex]).badgeClass
+                                      }
+                                    >
+                                      {getPricingStatusMeta(row.status[mobileSelectedDateIndex]).label}
+                                    </span>
+                                  ) : (
+                                    <span className="inline-flex items-center rounded-full border border-black/10 bg-white px-2.5 py-1 typo-h6-medium text-gray-300">
+                                      예약 불가
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+
+                              <div className="flex items-center justify-between gap-4">
+                                <p className={`m-0 min-w-0 flex-1 typo-body-bold ${isSelected ? 'text-white' : 'text-black'}`}>
+                                  {row.type}
+                                </p>
+
+                                {isAvailable ? (
+                                  <p className={`m-0 shrink-0 typo-body-bold ${isSelected ? 'text-white' : 'text-black'}`}>
+                                    {selection.price}
+                                  </p>
+                                ) : null}
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="mt-4 border-t border-black/10 pt-4">
+              {mobileSelectedPricing ? (
+                <>
+                  <p className="m-0 typo-h6-medium text-gray-500">
+                    {mobileSelectedPricing.category} · {mobileSelectedPricing.type}
+                  </p>
+                  <p className="m-0 mt-1 typo-body-bold text-black">
+                    {mobileSelectedPricing.dateDisplayLabel} · {mobileSelectedPricing.price}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="m-0 typo-h6-medium text-gray-500">날짜와 객실을 순서대로 선택해 주세요.</p>
+                  <p className="m-0 mt-1 typo-body-bold text-black">선택된 객실 없음</p>
+                </>
+              )}
+
+              {mobileSelectedBookingHref ? (
+                <a
+                  href={mobileSelectedBookingHref}
+                  className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-black py-3 text-white typo-h6-medium"
+                >
+                  선택한 객실 예약하기
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  className="mt-3 inline-flex w-full items-center justify-center rounded-xl bg-gray-200 py-3 text-gray-400 typo-h6-medium"
+                >
+                  날짜와 객실을 선택해 주세요
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="hidden md:block">
+            {selectedPricing ? (
+              <>
+                <p className="m-0 typo-h6-medium text-gray-500">
+                  {selectedPricing.category} · {selectedPricing.type}
+                </p>
+                <p className="m-0 mt-1 typo-body-bold text-black">
+                  {selectedPricing.dateLabel} · {selectedPricing.price}
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="m-0 typo-h6-medium text-gray-500">가격 셀을 선택해 객실을 고르세요.</p>
+                <p className="m-0 mt-1 typo-body-bold text-black">선택된 객실 없음</p>
+              </>
+            )}
+
+            {selectedBookingHref ? (
+              <a
+                href={selectedBookingHref}
+                className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-black text-white py-3 typo-h6-medium"
+              >
+                선택한 객실 예약하기
+                <ArrowUpRight size={16} aria-hidden="true" />
+              </a>
+            ) : (
+              <button
+                type="button"
+                disabled
+                className="mt-3 inline-flex w-full items-center justify-center rounded-xl bg-gray-200 text-gray-400 py-3 typo-h6-medium"
+              >
+                선택한 객실 예약하기
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
