@@ -13,7 +13,7 @@ const Registration = () => {
       className="animate-in fade-in duration-1000 bg-white"
       style={{ width: 'min(100%, 83.3333rem)' }}
     >
-      <section data-section="registration-main" className="page-section page-section-nav">
+      <section data-section="registration-main" className="page-section page-section-nav pb-32">
         <div data-block="registration-container" className="max-w-[83.3333rem] mx-auto">
         
         <div data-block="registration-header" className="text-center pb-[30px]">

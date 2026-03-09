@@ -80,8 +80,35 @@
   --fs-h6: calc(var(--font-scale) * 0.875);
   --fs-body: calc(var(--font-scale) * 1);
   --section-inline: clamp(1.5rem, 6vw, 6rem);
-  --section-block: clamp(1.5rem, 8vw, 6rem);
+  --section-block-base: clamp(1.5rem, 8vw, 6rem);
+  --section-block: var(--section-block-base);
   --section-nav-offset: 8rem;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --section-block: calc(var(--section-block-base) * 0.81);
+  }
+
+  main[data-page] > section.pb-32 {
+    padding-bottom: 6.48rem !important;
+  }
+
+  main[data-page] > section.pb-24 {
+    padding-bottom: 4.86rem !important;
+  }
+
+  main[data-page] > section.pt-24 {
+    padding-top: 4.86rem !important;
+  }
+
+  main[data-page] > header.pt-48 {
+    padding-top: 9.72rem !important;
+  }
+
+  main[data-page] > header.pb-24 {
+    padding-bottom: 4.86rem !important;
+  }
 }
 
 .page-shell {

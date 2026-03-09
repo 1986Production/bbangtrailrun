@@ -11,7 +11,7 @@ const Souvenirs = () => {
 
   return (
     <main data-page="souvenirs" className="animate-in fade-in duration-1000 bg-white">
-      <section data-section="souvenirs-main" className="page-section page-section-nav">
+      <section data-section="souvenirs-main" className="page-section page-section-nav pb-32">
         <div data-block="souvenirs-container" className="max-w-[80rem] mx-auto">
         
         {/* Header */}

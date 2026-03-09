@@ -132,7 +132,7 @@ const Course = () => {
 
   return (
     <main data-page="course" className="animate-in fade-in duration-1000 bg-white">
-      <section data-section="course-main" className="page-section page-section-nav">
+      <section data-section="course-main" className="page-section page-section-nav pb-32">
         <div data-block="course-container" className="max-w-[80rem] mx-auto">
         
         {/* Header */}

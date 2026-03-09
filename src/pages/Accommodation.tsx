@@ -650,7 +650,7 @@ const Accommodation = () => {
                                   {row.type}
                                 </p>
 
-                                {isAvailable ? (
+                                {selection ? (
                                   <p className={`m-0 shrink-0 typo-body-bold ${isSelected ? 'text-white' : 'text-black'}`}>
                                     {selection.price}
                                   </p>
