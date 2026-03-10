@@ -8,7 +8,7 @@ const heroOptions = [
   {
     id: "option-1",
     label: "1안",
-    src: "/images/home-hero-section-v7.png",
+    src: "/images/home-hero-section-v9.png",
     aspectRatio: "3418 / 2753",
   },
   {
@@ -26,12 +26,18 @@ const heroOptions = [
   {
     id: "option-4",
     label: "1-2안",
-    src: "/images/home-hero-section-v6.png",
+    src: "/images/home-hero-section-v7.png",
     aspectRatio: "3418 / 2753",
   },
   {
     id: "option-5",
     label: "1-3안",
+    src: "/images/home-hero-section-v6.png",
+    aspectRatio: "3418 / 2753",
+  },
+  {
+    id: "option-9",
+    label: "1-4안",
     src: "/images/home-hero-section-v8.png",
     aspectRatio: "3418 / 2753",
   },

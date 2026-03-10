@@ -490,9 +490,6 @@
   .h-2 {
     height: calc(var(--spacing) * 2);
   }
-  .h-4 {
-    height: calc(var(--spacing) * 4);
-  }
   .h-5 {
     height: calc(var(--spacing) * 5);
   }
@@ -516,6 +513,9 @@
   }
   .h-32 {
     height: calc(var(--spacing) * 32);
+  }
+  .h-\[23\.04px\] {
+    height: 23.04px;
   }
   .h-\[36\.8px\] {
     height: 36.8px;
@@ -556,9 +556,6 @@
   .w-2 {
     width: calc(var(--spacing) * 2);
   }
-  .w-4 {
-    width: calc(var(--spacing) * 4);
-  }
   .w-5 {
     width: calc(var(--spacing) * 5);
   }
@@ -579,6 +576,9 @@
   }
   .w-32 {
     width: calc(var(--spacing) * 32);
+  }
+  .w-\[23\.04px\] {
+    width: 23.04px;
   }
   .w-\[36\.8px\] {
     width: 36.8px;
@@ -2147,6 +2147,11 @@
       display: none;
     }
   }
+  .md\:aspect-\[16\/9\] {
+    @media (width >= 48rem) {
+      aspect-ratio: 16/9;
+    }
+  }
   .md\:aspect-\[21\/9\] {
     @media (width >= 48rem) {
       aspect-ratio: 21/9;
@@ -3100,7 +3105,7 @@ body.modal-open {
   position: relative;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.38);
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 0.2px solid rgba(255, 255, 255, 0.72);
   box-shadow: 0 12px 36px rgba(15, 23, 42, 0.07),
     inset 0 1px 0 rgba(255, 255, 255, 0.78),
     inset 0 -1px 0 rgba(255, 255, 255, 0.22);

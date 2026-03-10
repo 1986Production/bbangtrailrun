@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "빵트레일런",
   description:
     "빵트레일런 공식 홈페이지",
+  icons: {
+    icon: "/images/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -23,11 +23,11 @@ const Souvenirs = () => {
         {/* T-Shirt Section */}
         <div data-block="souvenirs-tshirt" className="mb-20">
           {/* Single Full-Width Image Box */}
-          <div className="bg-[#FFF9E6] rounded-[2rem] mb-[30px] overflow-hidden border border-orange-50/50 aspect-[16/9] md:aspect-[21/9] relative group">
+          <div className="bg-[#FFF9E6] rounded-[2rem] mb-[30px] overflow-hidden border border-orange-50/50 aspect-[16/9] md:aspect-[16/9] relative group">
             <img 
-              src="/images/tshirt-official-1200x600.jpg" 
-              alt="Official T-shirt" 
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              src="/images/tshirt-mockup-v1.png" 
+              alt="Official T-shirt mockup" 
+              className="absolute inset-0 block w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               referrerPolicy="no-referrer"
             />
           </div>

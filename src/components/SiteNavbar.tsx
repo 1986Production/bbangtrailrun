@@ -15,6 +15,22 @@ const navLinks = [
   { href: "/notice", label: "공지사항" },
 ];
 
+const MyPageIcon = ({ className }: { className?: string }) => (
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className={className}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle cx="12" cy="8.05" r="3.15" fill="currentColor" />
+    <path
+      d="M5.35 19.1C6.45 16.25 8.75 14.7 12 14.7C15.25 14.7 17.55 16.25 18.65 19.1C16.9 20.85 14.6 21.8 12 21.8C9.4 21.8 7.1 20.85 5.35 19.1Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
 const SiteNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -151,31 +167,18 @@ const SiteNavbar = () => {
             </div>
           </div>
 
-          <div className="inline-flex w-auto items-center gap-3 md:gap-4 text-black">
-            <a
-              href="https://bbangtrailrun.co.kr/shop_mypage"
-              className="theme-toggle inline-flex h-[54.74px] items-center justify-center gap-2.5 rounded-full border px-6 text-sm font-medium transition-colors"
-              data-target-mode="dark"
-            >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                className="h-4 w-4 shrink-0"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+          <div className="flex flex-col items-end gap-2 text-black">
+            <div className="inline-flex w-auto items-center gap-3 md:gap-4">
+              <a
+                href="https://bbangtrailrun.co.kr/shop_mypage"
+                className="theme-toggle inline-flex h-[54.74px] items-center justify-center gap-2.5 rounded-full border px-6 text-sm font-medium transition-colors"
+                data-target-mode="dark"
               >
-                <circle cx="12" cy="8" r="3.25" stroke="currentColor" strokeWidth="1.8" />
-                <path
-                  d="M5.75 18.25C7.3 15.42 9.48 14 12 14C14.52 14 16.7 15.42 18.25 18.25"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              마이페이지
-            </a>
-            <ThemeToggle />
+                <MyPageIcon className="h-[23.04px] w-[23.04px] shrink-0" />
+                내정보
+              </a>
+              <ThemeToggle />
+            </div>
           </div>
         </div>
 
