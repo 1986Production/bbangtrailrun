@@ -99,7 +99,7 @@ const SiteNavbar = () => {
             href="/"
             aria-label="빵트레일런 홈"
             onClick={() => setIsMenuOpen(false)}
-            className="inline-flex h-[69.25px] w-[128.03px] items-center justify-center shrink-0 pointer-events-auto"
+            className="inline-flex h-[72.71px] w-[134.43px] items-center justify-center shrink-0 pointer-events-auto"
           >
             <img
               src="/images/logo_en_v2@3x.png"
@@ -114,9 +114,9 @@ const SiteNavbar = () => {
 
       <div data-block="nav-container" className="relative z-0 p-10 flex justify-center">
         <div className="flex items-center gap-3 md:gap-4">
-          <div className="liquid-glass-shell inline-flex w-auto rounded-full px-[9.23px] py-[7.37px] items-center gap-6 text-black">
+          <div className="liquid-glass-shell inline-flex w-auto rounded-full px-[18.46px] py-[14.74px] items-center gap-6 text-black">
             <div className="flex items-center gap-4 md:gap-6 min-w-0">
-              <div ref={desktopNavRef} className="hidden lg:flex items-center gap-3 lg:gap-4 relative pb-[3px]">
+              <div ref={desktopNavRef} className="hidden lg:flex items-center gap-3 lg:gap-4 relative">
                 <span
                   aria-hidden="true"
                   className="site-nav-underline"
@@ -151,7 +151,30 @@ const SiteNavbar = () => {
             </div>
           </div>
 
-          <div className="inline-flex w-auto items-center text-black">
+          <div className="inline-flex w-auto items-center gap-3 md:gap-4 text-black">
+            <a
+              href="https://bbangtrailrun.co.kr/shop_mypage"
+              className="theme-toggle inline-flex h-[54.74px] items-center justify-center gap-2.5 rounded-full border px-6 text-sm font-medium transition-colors"
+              data-target-mode="dark"
+            >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="h-4 w-4 shrink-0"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="12" cy="8" r="3.25" stroke="currentColor" strokeWidth="1.8" />
+                <path
+                  d="M5.75 18.25C7.3 15.42 9.48 14 12 14C14.52 14 16.7 15.42 18.25 18.25"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              마이페이지
+            </a>
             <ThemeToggle />
           </div>
         </div>

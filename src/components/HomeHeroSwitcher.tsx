@@ -8,14 +8,14 @@ const heroOptions = [
   {
     id: "option-1",
     label: "1안",
-    src: "/images/home-hero-section-v2.png",
-    aspectRatio: "3418 / 2222",
+    src: "/images/home-hero-section-v7.png",
+    aspectRatio: "3418 / 2753",
   },
   {
     id: "option-2",
     label: "2안",
-    src: "/images/home-hero-section-v3.png",
-    aspectRatio: "6836 / 4443",
+    src: "/images/home-hero-section-v2.png",
+    aspectRatio: "3418 / 2222",
   },
   {
     id: "option-3",
@@ -25,13 +25,31 @@ const heroOptions = [
   },
   {
     id: "option-4",
-    label: "4안",
+    label: "1-2안",
+    src: "/images/home-hero-section-v6.png",
+    aspectRatio: "3418 / 2753",
+  },
+  {
+    id: "option-5",
+    label: "1-3안",
+    src: "/images/home-hero-section-v8.png",
+    aspectRatio: "3418 / 2753",
+  },
+  {
+    id: "option-7",
+    label: "2-2안",
+    src: "/images/home-hero-section-v3.png",
+    aspectRatio: "6836 / 4443",
+  },
+  {
+    id: "option-6",
+    label: "2-3안",
     src: "/images/home-hero-section-v4.png",
     aspectRatio: "6836 / 4443",
   },
   {
-    id: "option-5",
-    label: "5안",
+    id: "option-8",
+    label: "2-4안",
     src: "/images/home-hero-section-v5.png",
     aspectRatio: "3418 / 2222",
   },
