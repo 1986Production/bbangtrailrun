@@ -77,6 +77,7 @@
     --ease-out: cubic-bezier(0, 0, 0.2, 1);
     --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
     --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    --blur-sm: 8px;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
@@ -310,6 +311,9 @@
   .left-1\/2 {
     left: calc(1 / 2 * 100%);
   }
+  .left-4 {
+    left: calc(var(--spacing) * 4);
+  }
   .z-0 {
     z-index: 0;
   }
@@ -321,6 +325,9 @@
   }
   .z-50 {
     z-index: 50;
+  }
+  .z-\[120\] {
+    z-index: 120;
   }
   .z-\[9999\] {
     z-index: 9999;
@@ -529,6 +536,9 @@
   .h-\[72\.71px\] {
     height: 72.71px;
   }
+  .h-auto {
+    height: auto;
+  }
   .h-full {
     height: 100%;
   }
@@ -541,8 +551,14 @@
   .max-h-\[70vh\] {
     max-height: 70vh;
   }
+  .max-h-\[84vh\] {
+    max-height: 84vh;
+  }
   .max-h-\[90vh\] {
     max-height: 90vh;
+  }
+  .min-h-full {
+    min-height: 100%;
   }
   .min-h-screen {
     min-height: 100vh;
@@ -567,6 +583,9 @@
   }
   .w-10 {
     width: calc(var(--spacing) * 10);
+  }
+  .w-11 {
+    width: calc(var(--spacing) * 11);
   }
   .w-12 {
     width: calc(var(--spacing) * 12);
@@ -637,8 +656,14 @@
   .max-w-\[900px\] {
     max-width: 900px;
   }
+  .max-w-\[min\(92vw\,1280px\)\] {
+    max-width: min(92vw, 1280px);
+  }
   .max-w-md {
     max-width: var(--container-md);
+  }
+  .max-w-none {
+    max-width: none;
   }
   .max-w-xl {
     max-width: var(--container-xl);
@@ -646,8 +671,14 @@
   .min-w-0 {
     min-width: calc(var(--spacing) * 0);
   }
+  .min-w-\[3\.5rem\] {
+    min-width: 3.5rem;
+  }
   .min-w-\[46rem\] {
     min-width: 46rem;
+  }
+  .min-w-full {
+    min-width: 100%;
   }
   .flex-1 {
     flex: 1;
@@ -700,6 +731,12 @@
   }
   .animate-pulse {
     animation: var(--animate-pulse);
+  }
+  .cursor-grab {
+    cursor: grab;
+  }
+  .cursor-grabbing {
+    cursor: grabbing;
   }
   .cursor-not-allowed {
     cursor: not-allowed;
@@ -918,6 +955,9 @@
   .overflow-y-auto {
     overflow-y: auto;
   }
+  .overscroll-contain {
+    overscroll-behavior: contain;
+  }
   .rounded-2xl {
     border-radius: var(--radius-2xl);
   }
@@ -1089,6 +1129,9 @@
   .bg-\[\#FFF9E6\] {
     background-color: #FFF9E6;
   }
+  .bg-\[\#abe2fe\] {
+    background-color: #abe2fe;
+  }
   .bg-black {
     background-color: var(--color-black);
   }
@@ -1108,6 +1151,12 @@
     background-color: color-mix(in srgb, #181818 70%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-black) 70%, transparent);
+    }
+  }
+  .bg-black\/72 {
+    background-color: color-mix(in srgb, #181818 72%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-black) 72%, transparent);
     }
   }
   .bg-black\/\[0\.04\] {
@@ -1161,10 +1210,22 @@
       background-color: color-mix(in oklab, var(--color-white) 10%, transparent);
     }
   }
+  .bg-white\/92 {
+    background-color: color-mix(in srgb, #fff 92%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-white) 92%, transparent);
+    }
+  }
   .bg-white\/95 {
     background-color: color-mix(in srgb, #fff 95%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-white) 95%, transparent);
+    }
+  }
+  .bg-white\/96 {
+    background-color: color-mix(in srgb, #fff 96%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-white) 96%, transparent);
     }
   }
   .object-contain {
@@ -1173,11 +1234,17 @@
   .object-cover {
     object-fit: cover;
   }
+  .object-center {
+    object-position: center;
+  }
   .p-0 {
     padding: calc(var(--spacing) * 0);
   }
   .p-1 {
     padding: calc(var(--spacing) * 1);
+  }
+  .p-1\.5 {
+    padding: calc(var(--spacing) * 1.5);
   }
   .p-4 {
     padding: calc(var(--spacing) * 4);
@@ -1214,6 +1281,9 @@
   }
   .px-4 {
     padding-inline: calc(var(--spacing) * 4);
+  }
+  .px-5 {
+    padding-inline: calc(var(--spacing) * 5);
   }
   .px-6 {
     padding-inline: calc(var(--spacing) * 6);
@@ -1477,6 +1547,9 @@
   .text-\[var\(--fs-body\)\] {
     color: var(--fs-body);
   }
+  .text-\[var\(--fs-h6\)\] {
+    color: var(--fs-h6);
+  }
   .text-black {
     color: var(--color-black);
   }
@@ -1587,6 +1660,14 @@
     --tw-shadow: 0 4px 14px var(--tw-shadow-color, rgba(0,0,0,0.08));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .shadow-\[0_5px_15px_rgba\(0\,0\,0\,0\.06\)\] {
+    --tw-shadow: 0 5px 15px var(--tw-shadow-color, rgba(0,0,0,0.06));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-\[0_6px_16px_rgba\(0\,0\,0\,0\.06\)\] {
+    --tw-shadow: 0 6px 16px var(--tw-shadow-color, rgba(0,0,0,0.06));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
   .shadow-\[0_8px_20px_rgba\(0\,0\,0\,0\.08\)\] {
     --tw-shadow: 0 8px 20px var(--tw-shadow-color, rgba(0,0,0,0.08));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -1605,6 +1686,10 @@
   }
   .shadow-\[0_14px_30px_rgba\(0\,0\,0\,0\.12\)\] {
     --tw-shadow: 0 14px 30px var(--tw-shadow-color, rgba(0,0,0,0.12));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-\[0_24px_80px_rgba\(0\,0\,0\,0\.28\)\] {
+    --tw-shadow: 0 24px 80px var(--tw-shadow-color, rgba(0,0,0,0.28));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   .shadow-none {
@@ -1641,6 +1726,11 @@
   }
   .backdrop-blur-\[1px\] {
     --tw-backdrop-blur: blur(1px);
+    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+  }
+  .backdrop-blur-sm {
+    --tw-backdrop-blur: blur(var(--blur-sm));
     -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
     backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
   }
@@ -1846,6 +1936,16 @@
       }
     }
   }
+  .hover\:bg-black\/5 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: color-mix(in srgb, #181818 5%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-black) 5%, transparent);
+        }
+      }
+    }
+  }
   .hover\:bg-gray-50\/50 {
     &:hover {
       @media (hover: hover) {
@@ -1969,6 +2069,16 @@
     &:focus {
       --tw-outline-style: none;
       outline-style: none;
+    }
+  }
+  .disabled\:cursor-not-allowed {
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+  .disabled\:text-gray-300 {
+    &:disabled {
+      color: var(--color-gray-300);
     }
   }
   .sm\:col-span-2 {
@@ -3097,6 +3207,15 @@ body.modal-open {
   scrollbar-width: none;
 }
 .footer-modal-content::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+.preview-modal-content {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.preview-modal-content::-webkit-scrollbar {
   width: 0;
   height: 0;
   display: none;

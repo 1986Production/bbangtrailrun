@@ -749,6 +749,17 @@ body.modal-open {
   display: none;
 }
 
+.preview-modal-content {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.preview-modal-content::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 /* Liquid glass header */
 .liquid-glass-shell {
   position: relative;
