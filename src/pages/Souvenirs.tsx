@@ -11,7 +11,9 @@ const Souvenirs = () => {
   const tshirtMockupOptions = [
     { id: 'mockup-1', label: '1안', src: '/images/tshirt-mockup-v1.png' },
     { id: 'mockup-2', label: '2안', src: '/images/tshirt-mockup-v3.png' },
-    { id: 'mockup-3', label: '3안', src: '/images/tshirt-mockup-v2.png' }
+    { id: 'mockup-3', label: '3안', src: '/images/tshirt-mockup-v2.png' },
+    { id: 'mockup-4', label: '4안', src: '/images/tshirt-mockup-v4.png' },
+    { id: 'mockup-5', label: '5안', src: '/images/tshirt-mockup-v5.png' }
   ];
   const previewZoomStep = 0.25;
   const previewZoomMin = 1;
