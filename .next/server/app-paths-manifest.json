@@ -1,9 +1,7 @@
 {
-  "/course/page": "app/course/page.js",
-  "/notice/page": "app/notice/page.js",
+  "/overview/page": "app/overview/page.js",
+  "/registration/page": "app/registration/page.js",
   "/accommodation/page": "app/accommodation/page.js",
   "/souvenirs/page": "app/souvenirs/page.js",
-  "/page": "app/page.js",
-  "/overview/page": "app/overview/page.js",
-  "/registration/page": "app/registration/page.js"
+  "/page": "app/page.js"
 }
