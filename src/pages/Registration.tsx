@@ -263,13 +263,10 @@ const Registration = () => {
                       <button
                         key={course}
                         onClick={() => setSelectedCourse(course)}
+                        data-course={course}
                         data-role="registration-course-button"
                         data-selected={selectedCourse === course ? "true" : "false"}
-                        className={`py-3 rounded-xl text-sm font-bold transition-all duration-300 border ${
-                          selectedCourse === course
-                            ? 'bg-[#A8FF00] text-black border-[#A8FF00]'
-                            : 'bg-white text-gray-500 border-gray-200 hover:text-black'
-                        }`}
+                        className="py-3 rounded-xl text-sm font-bold transition-all duration-300 border bg-white text-gray-500 border-gray-200 hover:text-black"
                       >
                         {course}
                       </button>

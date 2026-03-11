@@ -5,7 +5,7 @@
   --font-sans: "Noto Sans KR", ui-sans-serif, system-ui, sans-serif;
   --color-black: #181818;
   --color-key-lime: #a8ff00;
-  --color-key-purple: #6000ff;
+  --color-key-purple: #abe2fe;
   --color-key-orange: #ff9000;
 
   --color-gray-50: var(--color-neutral-50);
@@ -49,12 +49,12 @@
 :root {
   --color-key-lime: #a8ff00;
   --color-key-lime-hover: #95e600;
-  --color-key-purple: #6000ff;
-  --color-key-purple-soft-bg: #f1ebff;
-  --color-key-purple-soft-border: #d3c1ff;
-  --color-key-purple-dark-soft-bg: #2a1f40;
-  --color-key-purple-dark-soft-border: #6c4db4;
-  --color-key-purple-dark-text: #bda4ff;
+  --color-key-purple: #abe2fe;
+  --color-key-purple-soft-bg: #eef9ff;
+  --color-key-purple-soft-border: #cfeefe;
+  --color-key-purple-dark-soft-bg: #203240;
+  --color-key-purple-dark-soft-border: #5e7f95;
+  --color-key-purple-dark-text: #abe2fe;
   --color-key-orange: #ff9000;
   --color-key-orange-soft-bg: #fff4e8;
   --color-key-orange-soft-border: #ffd099;
@@ -294,7 +294,7 @@ main[data-page] {
 
   .typo-h6-caption {
     font-size: calc(var(--fs-h6) * 0.765);
-    line-height: 1;
+    line-height: calc(var(--leading-default) / 1.7);
     font-weight: 500;
   }
 
@@ -677,10 +677,24 @@ html.dark [data-page="registration"] [data-role="registration-course-button"] {
   box-shadow: none !important;
 }
 
-html.dark [data-page="registration"] [data-role="registration-course-button"][data-selected="true"] {
-  background-color: var(--color-key-lime) !important;
+html.dark [data-page="registration"] [data-role="registration-course-button"][data-selected="true"][data-course="30K"] {
+  background-color: #a8ff00 !important;
   color: #181818 !important;
-  border-color: var(--color-key-lime) !important;
+  border-color: #a8ff00 !important;
+  box-shadow: none !important;
+}
+
+html.dark [data-page="registration"] [data-role="registration-course-button"][data-selected="true"][data-course="20K"] {
+  background-color: var(--color-key-purple) !important;
+  color: #181818 !important;
+  border-color: var(--color-key-purple) !important;
+  box-shadow: none !important;
+}
+
+html.dark [data-page="registration"] [data-role="registration-course-button"][data-selected="true"][data-course="12K"] {
+  background-color: #ff9000 !important;
+  color: #181818 !important;
+  border-color: #ff9000 !important;
   box-shadow: none !important;
 }
 
@@ -844,7 +858,7 @@ html.dark .liquid-glass-panel {
 
 .site-nav-link h5 {
   color: inherit !important;
-  line-height: 1;
+  line-height: calc(var(--leading-default) / 1.7);
 }
 
 .site-nav-underline {
@@ -891,6 +905,24 @@ html.dark .site-nav-link-active span {
 }
 
 /* Course page key colors */
+[data-page="registration"] [data-role="registration-course-button"][data-selected="true"][data-course="30K"] {
+  background-color: #a8ff00;
+  border-color: #a8ff00;
+  color: #181818;
+}
+
+[data-page="registration"] [data-role="registration-course-button"][data-selected="true"][data-course="20K"] {
+  background-color: var(--color-key-purple);
+  border-color: var(--color-key-purple);
+  color: #181818;
+}
+
+[data-page="registration"] [data-role="registration-course-button"][data-selected="true"][data-course="12K"] {
+  background-color: #ff9000;
+  border-color: #ff9000;
+  color: #181818;
+}
+
 [data-page="course"] [data-role="course-tab-button"][data-selected="true"][data-course="30K"] {
   background-color: #a8ff00;
   border-color: #a8ff00;
@@ -898,9 +930,9 @@ html.dark .site-nav-link-active span {
 }
 
 [data-page="course"] [data-role="course-tab-button"][data-selected="true"][data-course="20K"] {
-  background-color: #6000ff;
-  border-color: #6000ff;
-  color: #ffffff;
+  background-color: var(--color-key-purple);
+  border-color: var(--color-key-purple);
+  color: #181818;
 }
 
 [data-page="course"] [data-role="course-tab-button"][data-selected="true"][data-course="12K"] {
@@ -916,9 +948,9 @@ html.dark .site-nav-link-active span {
 }
 
 [data-page="course"] [data-role="course-map-action-button"][data-course="20K"]:hover {
-  border-color: #6000ff;
-  background-color: #6000ff;
-  color: #ffffff;
+  border-color: var(--color-key-purple);
+  background-color: var(--color-key-purple);
+  color: #181818;
 }
 
 [data-page="course"] [data-role="course-map-action-button"][data-course="12K"]:hover {
@@ -943,9 +975,9 @@ html.dark [data-page="course"] [data-role="course-tab-button"][data-selected="tr
 }
 
 html.dark [data-page="course"] [data-role="course-tab-button"][data-selected="true"][data-course="20K"] {
-  background-color: #6000ff !important;
-  color: #ffffff !important;
-  border-color: #6000ff !important;
+  background-color: var(--color-key-purple) !important;
+  color: #181818 !important;
+  border-color: var(--color-key-purple) !important;
   box-shadow: 0 8px 30px rgb(0, 0, 0, 0.04) !important;
 }
 
@@ -969,9 +1001,9 @@ html.dark [data-page="course"] [data-role="course-map-action-button"][data-cours
 }
 
 html.dark [data-page="course"] [data-role="course-map-action-button"][data-course="20K"]:hover {
-  background-color: #6000ff !important;
-  border-color: #6000ff !important;
-  color: #ffffff !important;
+  background-color: var(--color-key-purple) !important;
+  border-color: var(--color-key-purple) !important;
+  color: #181818 !important;
 }
 
 html.dark [data-page="course"] [data-role="course-map-action-button"][data-course="12K"]:hover {

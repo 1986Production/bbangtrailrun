@@ -489,7 +489,7 @@ const Accommodation = () => {
             <div
               className={`rounded-xl border px-3 py-2.5 text-center transition-all ${
                 selectedPricing
-                  ? 'border-black/25 bg-white text-black shadow-[0_4px_14px_rgba(0,0,0,0.08)]'
+                  ? 'border-black/25 bg-white text-black'
                   : 'border-black/15 bg-white text-gray-500'
               }`}
             >
@@ -499,7 +499,7 @@ const Accommodation = () => {
             <div
               className={`rounded-xl border px-3 py-2.5 text-center transition-all ${
                 selectedPricing
-                  ? 'border-black/25 bg-white text-black shadow-[0_4px_14px_rgba(0,0,0,0.08)]'
+                  ? 'border-black/25 bg-white text-black'
                   : 'border-black/15 bg-white text-gray-500'
               }`}
             >
