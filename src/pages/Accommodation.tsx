@@ -290,9 +290,9 @@ const Accommodation = () => {
   }, []);
 
   return (
-    <main data-page="accommodation" className="animate-in fade-in duration-1000 bg-white">
+    <main data-page="accommodation" className="accommodation animate-in fade-in duration-1000 bg-white">
       {/* Pricing Table Section */}
-      <section className="page-section-nav max-w-[80rem] mx-auto px-6 md:px-12 lg:px-24 pb-32">
+      <section className="layout-pad layout-pad-nav">
         <div className="rounded-[2rem] text-center mb-[30px]">
           <h1 className="tracking-tight text-black mb-[15px] heading-ko">하이원 예약</h1>
           <p className="m-0 typo-body-medium text-[#181818]">
@@ -742,7 +742,7 @@ const Accommodation = () => {
       </div>
 
       {/* Policies Section */}
-      <section className="max-w-[80rem] mx-auto px-6 md:px-12 lg:px-24 pb-32">
+      <section className="layout-pad-bottom">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-0 lg:gap-4 mb-12 border-b border-black/10 pb-[15px]">
           <div>
             <h2 className="heading-ko">이용 규정</h2>
@@ -798,7 +798,7 @@ const Accommodation = () => {
       </section>
 
       {/* Room Information (Editorial Split Style) */}
-      <section className="max-w-[80rem] mx-auto px-6 md:px-12 lg:px-24 pb-32">
+      <section className="layout-pad-bottom">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
           {/* Left: Sticky Header */}
           <div className="lg:w-1/3">
@@ -884,7 +884,7 @@ const Accommodation = () => {
       </section>
 
       {/* Location Section */}
-      <section className="max-w-[80rem] mx-auto px-6 md:px-12 lg:px-24 pb-32">
+      <section className="layout-pad-bottom">
         {/* Toggle */}
         <div className="flex justify-center mb-[30px] pt-4">
             <div className="bg-gray-100 p-1 rounded-full inline-flex border border-black/5">

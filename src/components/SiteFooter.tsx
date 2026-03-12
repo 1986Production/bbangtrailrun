@@ -171,8 +171,11 @@ const SiteFooter = () => {
 
   return (
     <>
-      <footer data-section="site-footer" className="bg-black text-white pt-24 pb-8 rounded-t-[3rem]">
-        <div data-block="footer-container" className="page-shell">
+      <footer
+        data-section="site-footer"
+        className="site-footer bg-black text-white pt-24 pb-8 rounded-t-[3rem]"
+      >
+        <div data-block="footer-wrap" className="footer-wrap layout-shell">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
             <div className="flex flex-col gap-10">
               <div className="space-y-10">

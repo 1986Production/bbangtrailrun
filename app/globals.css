@@ -82,12 +82,14 @@
   --section-inline: clamp(1.5rem, 6vw, 6rem);
   --section-block-base: clamp(1.5rem, 8vw, 6rem);
   --section-block: var(--section-block-base);
+  --section-block-main: 8rem;
   --section-nav-offset: 8rem;
 }
 
 @media (max-width: 767px) {
   :root {
     --section-block: calc(var(--section-block-base) * 0.81);
+    --section-block-main: 6.48rem;
   }
 
   main[data-page] > section.pb-32 {
@@ -111,7 +113,7 @@
   }
 }
 
-.page-shell {
+.layout-shell {
   width: min(100%, 80rem);
   margin-inline: auto;
   padding-inline: var(--section-inline);
@@ -122,13 +124,49 @@ main[data-page] {
   margin-inline: auto;
 }
 
-.page-section {
+.layout-pad {
   padding-inline: var(--section-inline);
-  padding-block: var(--section-block);
+  padding-bottom: var(--section-block-main);
 }
 
-.page-section-nav {
-  padding-top: calc(var(--section-block) + var(--section-nav-offset));
+.layout-pad-nav {
+  padding-top: calc(var(--section-block-main) + var(--section-nav-offset));
+}
+
+.layout-pad-bottom {
+  padding-inline: var(--section-inline);
+  padding-bottom: var(--section-block-main);
+}
+
+.layout-band {
+  padding-block: var(--section-block-main);
+}
+
+.layout-frame,
+.layout-frame-border,
+.layout-frame-bottom,
+.layout-frame-nav {
+  width: min(100%, 80rem);
+  margin-inline: auto;
+  padding-inline: var(--section-inline);
+}
+
+.layout-frame {
+  padding-bottom: var(--section-block-main);
+}
+
+.layout-frame-border {
+  padding-bottom: var(--section-block-main);
+  border-top: 1px solid rgba(24, 24, 24, 0.1);
+}
+
+.layout-frame-bottom {
+  padding-bottom: var(--section-block-main);
+}
+
+.layout-frame-nav {
+  padding-top: calc(var(--section-block-main) + var(--section-nav-offset));
+  padding-bottom: var(--section-block-main);
 }
 
 .noto-sans-kr {
@@ -382,16 +420,16 @@ html.theme-switching *::after {
     }
 
     ::view-transition-old(root) {
-      animation-name: page-fade-out;
+      animation-name: view-fade-out;
     }
 
     ::view-transition-new(root) {
-      animation-name: page-fade-in;
+      animation-name: view-fade-in;
     }
   }
 }
 
-@keyframes page-fade-out {
+@keyframes view-fade-out {
   from {
     opacity: 1;
   }
@@ -400,7 +438,7 @@ html.theme-switching *::after {
   }
 }
 
-@keyframes page-fade-in {
+@keyframes view-fade-in {
   from {
     opacity: 0.92;
   }
@@ -769,6 +807,17 @@ body.modal-open {
 }
 
 .preview-modal-content::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.home-hero-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.home-hero-scroll::-webkit-scrollbar {
   width: 0;
   height: 0;
   display: none;

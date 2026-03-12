@@ -13,6 +13,7 @@ const navLinks = [
   { href: "/registration", label: "참가신청" },
   { href: "/accommodation", label: "숙박권" },
   { href: "/notice", label: "공지사항" },
+  { href: "/archive", label: "보관용" },
 ];
 
 const MyPageIcon = ({ className }: { className?: string }) => (
@@ -108,7 +109,7 @@ const SiteNavbar = () => {
   };
 
   return (
-    <nav data-section="site-nav" className="fixed top-0 left-0 right-0 z-50">
+    <nav data-section="site-nav" className="site-nav fixed top-0 left-0 right-0 z-50">
       <div className="absolute inset-x-0 top-0 px-0 pt-10 md:px-10 pointer-events-none z-10">
         <div className="flex justify-start">
           <Link
@@ -128,7 +129,10 @@ const SiteNavbar = () => {
         </div>
       </div>
 
-      <div data-block="nav-container" className="relative z-0 flex flex-col items-end px-0 pt-10 md:p-10 md:items-center">
+      <div
+        data-block="nav-wrap"
+        className="nav-wrap relative z-0 flex flex-col items-end px-0 pt-10 md:p-10 md:items-center"
+      >
         <div className="flex items-center gap-3 md:gap-4">
           <div className="liquid-glass-shell inline-flex w-auto rounded-full px-[18.46px] py-[14.74px] items-center gap-6 text-black">
             <div className="flex items-center gap-4 md:gap-6 min-w-0">

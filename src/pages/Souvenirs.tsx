@@ -284,9 +284,12 @@ const Souvenirs = () => {
 
   return (
     <>
-      <main data-page="souvenirs" className="animate-in fade-in duration-1000 bg-white">
-        <section data-section="souvenirs-main" className="page-section page-section-nav pb-32">
-          <div data-block="souvenirs-container" className="max-w-[80rem] mx-auto">
+      <main data-page="souvenirs" className="souvenirs animate-in fade-in duration-1000 bg-white">
+        <section
+          data-section="souvenirs"
+          className="souvenirs layout-pad layout-pad-nav"
+        >
+          <div data-block="souvenirs-wrap" className="souvenirs-wrap max-w-[80rem] mx-auto">
         
           {/* Header */}
           <div className="text-center mb-[30px]">
@@ -295,7 +298,7 @@ const Souvenirs = () => {
           </div>
 
           {/* T-Shirt Section */}
-          <div data-block="souvenirs-tshirt" className="mb-20">
+          <div data-block="souvenirs-tshirt" className="souvenirs-tshirt mb-20">
             <div className="flex justify-center mb-[30px] pt-4">
               <div className="bg-gray-100 p-1 rounded-full inline-flex border border-black/5">
                 {tshirtMockupOptions.map((option) => (
@@ -384,7 +387,10 @@ const Souvenirs = () => {
           </div>
 
           {/* Other Souvenirs Grid */}
-          <div data-block="souvenirs-items" className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+          <div
+            data-block="souvenirs-items"
+            className="souvenirs-items grid grid-cols-1 md:grid-cols-2 gap-6 mb-16"
+          >
             {/* Bib & Chip */}
             <div className="bg-[#F5F5F5] rounded-[2rem] p-10 flex flex-col items-center text-center border border-black/5 hover:bg-gray-100 transition-colors group">
               <h4 className="text-black mb-8">배번호표 & 기록칩</h4>

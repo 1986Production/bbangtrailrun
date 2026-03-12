@@ -88,16 +88,20 @@ export default function AccommodationCalendarSection({
   const visibleCalendarWeeks = septemberCalendar.filter((week) => week.some((cell) => !cell.muted));
   const selectableDaySet = new Set(selectableDays);
   const WrapperTag = embedded ? "div" : "section";
-  const wrapperClassName = embedded ? "" : "page-section border-t border-black/10 bg-white md:bg-gray-50";
-  const containerClassName = embedded ? "" : "max-w-[80rem] mx-auto";
+  const wrapperClassName = embedded
+    ? "accommodation-calendar"
+    : "accommodation-calendar layout-pad border-t border-black/10 bg-white md:bg-gray-50";
+  const containerClassName = embedded
+    ? "accommodation-calendar-wrap"
+    : "accommodation-calendar-wrap max-w-[80rem] mx-auto";
 
   return (
     <WrapperTag
-      data-section="home-accommodation-calendar"
+      data-section="accommodation-calendar"
       className={wrapperClassName}
     >
       <div
-        data-block="home-accommodation-calendar-container"
+        data-block="accommodation-calendar-wrap"
         className={containerClassName}
       >
         <div className="rounded-[2rem] transition-colors" data-role="accommodation-calendar">

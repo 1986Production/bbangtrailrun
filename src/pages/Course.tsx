@@ -131,12 +131,15 @@ const Course = () => {
   );
 
   return (
-    <main data-page="course" className="animate-in fade-in duration-1000 bg-white">
-      <section data-section="course-main" className="page-section page-section-nav pb-32">
-        <div data-block="course-container" className="max-w-[80rem] mx-auto">
+    <main data-page="course" className="course animate-in fade-in duration-1000 bg-white">
+      <section
+        data-section="course"
+        className="course layout-pad layout-pad-nav"
+      >
+        <div data-block="course-wrap" className="course-wrap max-w-[80rem] mx-auto">
         
         {/* Header */}
-        <div data-block="course-header" className="text-center pb-[30px]">
+        <div data-block="course-title" className="course-title text-center pb-[30px]">
           <h1 className="tracking-tight text-black mb-[15px]">코스안내</h1>
         </div>
 
@@ -162,7 +165,7 @@ const Course = () => {
 
         <div className="animate-in slide-in-from-bottom-4 fade-in duration-500" key={activeTab}>
           {/* Map Section */}
-          <div data-block="course-map" className="mb-20">
+          <div data-block="course-map" className="course-map mb-20">
             <h3 data-force-ko-heading="true" className="mb-0 heading-ko">{data.title} 코스</h3>
             <p className="mt-0 mb-[15px] typo-body-medium text-[#181818]">{data.mapDescription}</p>
             <div className="flex flex-col gap-6">
@@ -223,7 +226,7 @@ const Course = () => {
           </div>
 
           {/* Details Section */}
-          <div data-block="course-details" className="mb-20">
+          <div data-block="course-details" className="course-details mb-20">
             <h3 className="mb-[15px] heading-ko">{data.title} 코스 상세 내용</h3>
             <div className="bg-[#F5F5F5] rounded-[2rem] p-8 md:p-12 border border-black/5 hover:bg-gray-100 transition-colors">
               
@@ -279,7 +282,7 @@ const Course = () => {
           </div>
 
           {/* Equipment Section */}
-          <div data-block="course-gear" className="mb-20">
+          <div data-block="course-gear" className="course-gear mb-20">
             <h3 className="mb-[15px] heading-ko">장비 안내</h3>
             <div className="bg-[#F5F5F5] rounded-[2rem] p-8 md:p-12 border border-black/5 hover:bg-gray-100 transition-colors">
               

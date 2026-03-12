@@ -4,10 +4,13 @@ import { AccordionItem } from '../components/AccordionItem';
 
 const Notice = () => {
   return (
-    <main data-page="notice" className="animate-in fade-in duration-1000 bg-white">
-      <section data-section="notice-main" className="page-section page-section-nav">
-        <div data-block="notice-container" className="max-w-[80rem] mx-auto">
-        <div data-block="notice-header" className="text-center mb-16">
+    <main data-page="notice" className="notice animate-in fade-in duration-1000 bg-white">
+      <section
+        data-section="notice"
+        className="notice layout-pad layout-pad-nav"
+      >
+        <div data-block="notice-wrap" className="notice-wrap max-w-[80rem] mx-auto">
+        <div data-block="notice-title" className="notice-title text-center mb-16">
           <h1 className="tracking-tight text-black mb-4">공지사항</h1>
           <p className="font-medium text-gray-600">DashDigital의 새로운 소식과 안내를 확인하세요.</p>
         </div>

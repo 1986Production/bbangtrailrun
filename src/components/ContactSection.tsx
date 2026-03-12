@@ -1,14 +1,17 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 
-const ContactSection = () => {
+const ServicesContactSection = () => {
   return (
     <section
       id="services-lets-talk"
-      data-section="contact-main"
-      className="px-6 md:px-12 lg:px-24 py-16 md:py-24 max-w-[80rem] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24"
+      data-section="services-contact"
+      className="services-contact layout-pad grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24"
     >
-      <div data-block="contact-info" className="lg:col-span-5 flex flex-col">
+      <div
+        data-block="services-info"
+        className="services-info lg:col-span-5 flex flex-col"
+      >
         <p className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gray-100 text-gray-600 text-xs font-medium uppercase tracking-widest mb-8 self-start m-0">
           Contact
         </p>
@@ -29,7 +32,10 @@ const ContactSection = () => {
         </div>
       </div>
 
-      <div data-block="contact-form" className="lg:col-span-7 flex flex-col justify-center">
+      <div
+        data-block="services-form"
+        className="services-form lg:col-span-7 flex flex-col justify-center"
+      >
         <form className="flex flex-col space-y-8 bg-white p-8 md:p-12 rounded-[3rem] shadow-xl shadow-black/5 border border-black/5">
           <div className="flex flex-col">
             <label className="text-xs font-medium uppercase tracking-widest text-gray-500 mb-3">01 / Name</label>
@@ -105,4 +111,4 @@ const ContactSection = () => {
   );
 };
 
-export default ContactSection;
+export default ServicesContactSection;

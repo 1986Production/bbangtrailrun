@@ -3,14 +3,14 @@ import { ArrowRight } from 'lucide-react';
 
 const Contact = () => {
   return (
-    <main data-page="contact" className="animate-in fade-in duration-1000 bg-white pt-32 min-h-screen">
+    <main data-page="contact" className="contact animate-in fade-in duration-1000 bg-white min-h-screen">
       <section
-        data-section="contact-main"
-        className="px-6 md:px-12 lg:px-24 py-16 md:py-24 max-w-[80rem] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24"
+        data-section="contact"
+        className="contact layout-pad layout-pad-nav grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24"
       >
         
         {/* Left Column */}
-        <div data-block="contact-info" className="lg:col-span-5 flex flex-col">
+        <div data-block="contact-info" className="contact-info lg:col-span-5 flex flex-col">
           <p className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gray-100 text-gray-600 text-xs font-medium uppercase tracking-widest mb-8 self-start m-0">
             Contact
           </p>
@@ -28,7 +28,10 @@ const Contact = () => {
         </div>
 
         {/* Right Column - Form */}
-        <div data-block="contact-form" className="lg:col-span-7 flex flex-col justify-center">
+        <div
+          data-block="contact-form"
+          className="contact-form lg:col-span-7 flex flex-col justify-center"
+        >
           <form className="flex flex-col space-y-8 bg-white p-8 md:p-12 rounded-[3rem] shadow-xl shadow-black/5 border border-black/5">
             <div className="flex flex-col">
               <label className="text-xs font-medium uppercase tracking-widest text-gray-500 mb-3">01 / Name</label>

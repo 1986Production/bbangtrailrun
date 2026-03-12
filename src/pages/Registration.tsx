@@ -10,21 +10,30 @@ const Registration = () => {
   return (
     <main
       data-page="registration"
-      className="animate-in fade-in duration-1000 bg-white"
+      className="registration animate-in fade-in duration-1000 bg-white"
       style={{ width: 'min(100%, 83.3333rem)' }}
     >
-      <section data-section="registration-main" className="page-section page-section-nav pb-32">
-        <div data-block="registration-container" className="max-w-[83.3333rem] mx-auto">
+      <section
+        data-section="registration"
+        className="registration layout-pad layout-pad-nav"
+      >
+        <div
+          data-block="registration-wrap"
+          className="registration-wrap max-w-[83.3333rem] mx-auto"
+        >
         
-        <div data-block="registration-header" className="text-center pb-[30px]">
+        <div data-block="registration-title" className="registration-title text-center pb-[30px]">
           <h1 className="tracking-tight text-black mb-[15px]">참가신청</h1>
           <p>대회 참가 전 유의사항 및 규정을 반드시 확인해 주세요.</p>
         </div>
 
-        <div data-block="registration-layout" className="flex flex-col lg:flex-row gap-12 lg:gap-16 relative">
+        <div
+          data-block="registration-body"
+          className="registration-body flex flex-col lg:flex-row gap-12 lg:gap-16 relative"
+        >
           
           {/* Left Content: Terms and Conditions */}
-          <div data-block="registration-terms" className="w-full lg:w-2/3">
+          <div data-block="registration-terms" className="registration-terms w-full lg:w-2/3">
             
             <div className="flex flex-col gap-16">
               {/* Section 1 */}
@@ -239,7 +248,10 @@ const Registration = () => {
           </div>
 
           {/* Right Content: Sticky Registration Panel */}
-          <div data-block="registration-side" className="w-full lg:w-1/3 md:pt-[50px]">
+          <div
+            data-block="registration-side"
+            className="registration-side w-full lg:w-1/3 md:pt-[50px]"
+          >
             <div className="sticky top-32 bg-white rounded-[2rem] p-8 md:p-10 border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
               
               {/* Registration Image */}
