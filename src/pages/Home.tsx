@@ -404,26 +404,30 @@ const HomeEventIntroSection = () => (
   </section>
 );
 
-export const CaseStudiesSection = () => {
+type CaseStudiesSectionProps = {
+  showTopBorder?: boolean;
+};
+
+export const CaseStudiesSection = ({ showTopBorder = true }: CaseStudiesSectionProps) => {
   const clients = [
     {
-      name: "Lemkus",
-      desc: "Creating a new design system and conducting an overhaul of the brand's digital experience.",
+      name: "물품보관소",
+      desc: "잔디광장에서 물품을 무료로 맡길 수 있습니다.",
     },
     {
-      name: "Tiger Wheel & Tyre",
-      desc: "Building a robust eCommerce capability that re-imagined the way consumers purchase online.",
+      name: "완주 메달 각인 서비스",
+      desc: "완주 메달에 이름과 기록을 레이저로 각인합니다.\n*비용: 3,000원",
     },
     {
-      name: "KIA",
-      desc: "Creating a best-in-class eCommerce experience underpinned by an in-depth research study.",
+      name: "하이원 워터월드",
+      desc: "최대 할인된 금액으로 샤워 및 휴식을 즐길 수 있습니다.\n*하이원 호텔 사우나는 공사로 인해 미운영",
     },
   ];
 
   return (
     <section
       data-section="cases"
-      className={`cases ${homeBorderFrameClassName}`}
+      className={`cases ${showTopBorder ? homeBorderFrameClassName : homeFrameClassName}`}
     >
       <div
         data-block="cases-wrap"
@@ -431,9 +435,9 @@ export const CaseStudiesSection = () => {
       >
         <div className="lg:col-span-1">
           <h2>
-            주요
+            편의
             <br />
-            사례
+            시설
           </h2>
         </div>
         <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -443,7 +447,7 @@ export const CaseStudiesSection = () => {
               className="bg-white p-8 rounded-[2rem] shadow-xl shadow-black/5 border border-black/5"
             >
               <h3 className="text-black mb-4">{client.name}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">{client.desc}</p>
+              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">{client.desc}</p>
             </div>
           ))}
         </div>

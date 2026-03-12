@@ -23,10 +23,30 @@ const workType = {
 };
 
 const workProjects = [
-  { img: "/images/solar-1200x800.jpg", tags: "Research / Strategy / Design", title: "Enpower" },
-  { img: "/images/sneaker1-1200x800.jpg", tags: "Design / Development", title: "Fitsole" },
-  { img: "/images/orange-1200x800.jpg", tags: "Strategy / Design", title: "Vana" },
-  { img: "/images/sneaker2-1200x800.jpg", tags: "Research / Design", title: "Lemkus" },
+  {
+    img: "/images/side-program-awards-ceremony.jpeg",
+    tags: "Research / Strategy / Design",
+    title: "시상식",
+    desc: "30K·20K 요일별 남녀 1위 시상식",
+  },
+  {
+    img: "/images/side-program-opening-session.jpeg",
+    tags: "Design / Development",
+    title: "오프닝 세션",
+    desc: "국가대표에게 배우는 트레일런 꿀팁",
+  },
+  {
+    img: "/images/side-program-bbanglympics.jpeg",
+    tags: "Strategy / Design",
+    title: "빵림픽",
+    desc: "잔디광장에서 즐기는 몸풀기 게임",
+  },
+  {
+    img: "/images/side-program-photo-zone.jpeg",
+    tags: "Research / Design",
+    title: "포토존",
+    desc: "귀여운 빵 소품과 함께 찍는 포토존",
+  },
   { img: "/images/watch-1200x800.jpg", tags: "Strategy / Design", title: "Timepiece" },
   { img: "/images/bag-1200x800.jpg", tags: "Research / Development", title: "Carry" },
 ];
@@ -117,9 +137,10 @@ export const ServicesEventOverviewSection = () => (
 
 type ProjectGallerySectionProps = {
   limit?: number;
+  showDescriptions?: boolean;
 };
 
-export const ProjectGallerySection = ({ limit }: ProjectGallerySectionProps) => (
+export const ProjectGallerySection = ({ limit, showDescriptions = false }: ProjectGallerySectionProps) => (
   <section data-section="projects" className="projects layout-pad-bottom">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
       {workProjects.slice(0, limit ?? workProjects.length).map((project, i) => (
@@ -127,10 +148,17 @@ export const ProjectGallerySection = ({ limit }: ProjectGallerySectionProps) => 
           <div className="overflow-hidden rounded-[2rem] aspect-[4/5] mb-6 shadow-xl shadow-black/5">
             <img src={project.img} alt={project.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-all duration-700" referrerPolicy="no-referrer" />
           </div>
-          <div className="flex justify-between items-center px-2">
-            <h3 className="m-0">{project.title}</h3>
-            <h6 className="m-0">{project.tags}</h6>
-          </div>
+          {showDescriptions ? (
+            <div className="px-2">
+              <h3 className="m-0">{project.title}</h3>
+              <p className="m-0 typo-body-medium text-gray-500">{project.desc}</p>
+            </div>
+          ) : (
+            <div className="flex justify-between items-center px-2">
+              <h3 className="m-0">{project.title}</h3>
+              <h6 className="m-0">{project.tags}</h6>
+            </div>
+          )}
         </div>
       ))}
     </div>

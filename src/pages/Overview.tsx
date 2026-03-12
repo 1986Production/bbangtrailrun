@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { MapPin } from 'lucide-react';
 import OrganizerIntroSection from '@/src/components/OrganizerIntroSection';
+import { CaseStudiesSection } from '@/src/pages/Home';
 import { ProjectGallerySection } from '@/src/pages/Services';
 
 const overviewType = {
@@ -262,7 +263,8 @@ const Overview = () => {
         </div>
       </section>
 
-      <ProjectGallerySection limit={4} />
+      <ProjectGallerySection limit={4} showDescriptions />
+      <CaseStudiesSection showTopBorder={false} />
 
       {/* Timetable Section */}
       <section
