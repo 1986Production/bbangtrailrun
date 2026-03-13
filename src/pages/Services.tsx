@@ -51,7 +51,7 @@ const workProjects = [
   { img: "/images/bag-1200x800.jpg", tags: "Research / Development", title: "Carry" },
 ];
 
-export const ServicesEventOverviewSection = () => (
+const ServicesEventOverviewSection = () => (
   <section
     data-section="services-overview"
     className="services-overview layout-pad-bottom"
@@ -140,7 +140,7 @@ type ProjectGallerySectionProps = {
   showDescriptions?: boolean;
 };
 
-export const ProjectGallerySection = ({ limit, showDescriptions = false }: ProjectGallerySectionProps) => (
+const ProjectGallerySection = ({ limit, showDescriptions = false }: ProjectGallerySectionProps) => (
   <section data-section="projects" className="projects layout-pad-bottom">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
       {workProjects.slice(0, limit ?? workProjects.length).map((project, i) => (
@@ -165,7 +165,7 @@ export const ProjectGallerySection = ({ limit, showDescriptions = false }: Proje
   </section>
 );
 
-export const ServicesSections = () => {
+const ServicesSections = () => {
   const services = [
     {
       num: "01",

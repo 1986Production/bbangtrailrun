@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AccordionItem } from "@/src/components/AccordionItem";
 import { notices } from "@/src/data/notices";
 
@@ -10,7 +10,7 @@ const heroOptions = [
   {
     id: "option-1",
     label: "1안",
-    src: "/images/home-hero-section-v7.png",
+    src: "/images/home-hero-section-v1.png",
     aspectRatio: "3418 / 2753",
   },
   {
@@ -22,69 +22,44 @@ const heroOptions = [
   {
     id: "option-3",
     label: "3안",
-    src: "/images/home-hero-section-v1.png",
-    aspectRatio: "3248 / 1827",
-  },
-  {
-    id: "option-4",
-    label: "1-2안",
-    src: "/images/home-hero-section-v9.png",
-    aspectRatio: "3418 / 2753",
-  },
-  {
-    id: "option-5",
-    label: "1-3안",
-    src: "/images/home-hero-section-v6.png",
-    aspectRatio: "3418 / 2753",
-  },
-  {
-    id: "option-9",
-    label: "4안",
-    src: "/images/home-hero-section-v10.png",
-    aspectRatio: "3248 / 2258",
-  },
-  {
-    id: "option-7",
-    label: "2-2안",
     src: "/images/home-hero-section-v3.png",
     aspectRatio: "6836 / 4443",
   },
   {
-    id: "option-6",
-    label: "2-3안",
+    id: "option-4",
+    label: "4안",
     src: "/images/home-hero-section-v4.png",
     aspectRatio: "6836 / 4443",
   },
   {
-    id: "option-8",
-    label: "2-4안",
+    id: "option-6",
+    label: "5안",
     src: "/images/home-hero-section-v5.png",
+    aspectRatio: "3418 / 2222",
+  },
+  {
+    id: "option-5",
+    label: "1-2안",
+    src: "/images/home-hero-section-v1-2.png",
+    aspectRatio: "3418 / 2753",
+  },
+  {
+    id: "option-7",
+    label: "Finish",
+    src: "/images/home-hero-section-finish.png",
     aspectRatio: "3418 / 2222",
   },
 ];
 
-const heroCarouselItems = [
-  {
-    id: "hero-carousel-1",
-    title: "캐러셀 이미지 01",
-    src: "/images/team1-600x800.jpg",
-  },
-  {
-    id: "hero-carousel-2",
-    title: "캐러셀 이미지 02",
-    src: "/images/team2-600x800.jpg",
-  },
-  {
-    id: "hero-carousel-3",
-    title: "캐러셀 이미지 03",
-    src: "/images/team3-600x800.jpg",
-  },
-  {
-    id: "hero-carousel-4",
-    title: "캐러셀 이미지 04",
-    src: "/images/team4-600x800.jpg",
-  },
-];
+const heroCarouselItems = Array.from({ length: 10 }, (_, index) => {
+  const order = String(index + 1).padStart(2, "0");
+
+  return {
+    id: `hero-carousel-${order}`,
+    title: `캐러셀 이미지 ${order}`,
+    src: `/images/home-hero-carousel-${order}.jpg`,
+  };
+});
 
 const heroServicePreview = {
   title: "나무 13 X 빵트레일런",
@@ -95,17 +70,61 @@ const heroServicePreview = {
 };
 
 const homeFrameClassName = "layout-frame";
-const homeBorderFrameClassName = "layout-frame-border";
 const homeBottomFrameClassName = "layout-frame-bottom";
 
 const HomeHeroIntro = () => {
   const heroCarouselScrollRef = useRef<HTMLDivElement | null>(null);
+  const heroCarouselAutoplayPausedRef = useRef(false);
   const heroCarouselDragStateRef = useRef({
     active: false,
     pointerId: -1,
     startX: 0,
     scrollLeft: 0,
   });
+
+  useEffect(() => {
+    if (typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return undefined;
+    }
+
+    const autoplayIntervalId = window.setInterval(() => {
+      const heroCarouselScrollElement = heroCarouselScrollRef.current;
+
+      if (
+        !heroCarouselScrollElement ||
+        heroCarouselAutoplayPausedRef.current ||
+        heroCarouselDragStateRef.current.active
+      ) {
+        return;
+      }
+
+      const listElement = heroCarouselScrollElement.firstElementChild as HTMLElement | null;
+      const firstCardElement = listElement?.querySelector<HTMLElement>("article");
+
+      if (!listElement || !firstCardElement) {
+        return;
+      }
+
+      const listStyles = window.getComputedStyle(listElement);
+      const gap = Number.parseFloat(listStyles.columnGap || listStyles.gap || "0");
+      const step = firstCardElement.getBoundingClientRect().width + gap;
+      const maxScrollLeft = heroCarouselScrollElement.scrollWidth - heroCarouselScrollElement.clientWidth;
+      const nextScrollLeft = heroCarouselScrollElement.scrollLeft + step;
+
+      if (maxScrollLeft <= 0) {
+        return;
+      }
+
+      heroCarouselScrollElement.scrollTo({
+        left: nextScrollLeft >= maxScrollLeft - 8 ? 0 : nextScrollLeft,
+        behavior: nextScrollLeft >= maxScrollLeft - 8 ? "auto" : "smooth",
+      });
+    }, 3500);
+
+    return () => {
+      window.clearInterval(autoplayIntervalId);
+    };
+  }, []);
 
   const handleHeroCarouselPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.pointerType !== "mouse" || event.button !== 0 || !heroCarouselScrollRef.current) {
@@ -193,6 +212,18 @@ const HomeHeroIntro = () => {
         <div
           ref={heroCarouselScrollRef}
           className="home-hero-scroll cursor-grab overflow-x-auto snap-x snap-proximity scroll-smooth select-none active:cursor-grabbing"
+          onMouseEnter={() => {
+            heroCarouselAutoplayPausedRef.current = true;
+          }}
+          onMouseLeave={() => {
+            heroCarouselAutoplayPausedRef.current = false;
+          }}
+          onTouchStart={() => {
+            heroCarouselAutoplayPausedRef.current = true;
+          }}
+          onTouchEnd={() => {
+            heroCarouselAutoplayPausedRef.current = false;
+          }}
           onPointerDown={handleHeroCarouselPointerDown}
           onPointerMove={handleHeroCarouselPointerMove}
           onPointerUp={finishHeroCarouselDrag}
@@ -279,11 +310,11 @@ const HomeHeroSwitcher = () => {
         data-section="home-visual"
         className="home-visual relative left-1/2 w-screen -translate-x-1/2"
       >
-        <div className="w-full bg-gray-100" style={{ aspectRatio: selectedHero.aspectRatio }}>
+        <div className="w-full bg-gray-100">
           <img
             src={selectedHero.src}
             alt="빵트레일런 메인 비주얼"
-            className="block w-full h-full object-cover"
+            className="block w-full h-auto"
             referrerPolicy="no-referrer"
           />
         </div>
@@ -308,70 +339,6 @@ const HomeHeroSwitcher = () => {
         </div>
       </div>
     </>
-  );
-};
-
-export const FeaturedProjectsSection = () => {
-  const items = [
-    {
-      tags: "Strategy / Design",
-      title: "Enpower",
-      img: "/images/solar-1200x800.jpg",
-    },
-    {
-      tags: "Design / Development",
-      title: "Fitsole",
-      img: "/images/sneaker1-1200x800.jpg",
-    },
-    {
-      tags: "Research / Design",
-      title: "Lemkus",
-      img: "/images/sneaker2-1200x800.jpg",
-    },
-  ];
-
-  return (
-    <section
-      data-section="featured-projects"
-      className={`featured-projects ${homeFrameClassName} bg-gray-100`}
-    >
-      <div data-block="projects-wrap" className="projects-wrap">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16">
-          <h2>대표 프로젝트</h2>
-          <Link
-            href="/overview"
-            className="text-sm font-medium text-gray-600 hover:text-black transition-colors mt-6 md:mt-0 flex items-center border-b border-gray-400/30 pb-1"
-          >
-            전체 프로젝트 보기 <ArrowRight size={16} className="ml-2" />
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {items.map((item, i) => (
-            <div
-              key={item.title}
-              className={`flex flex-col group cursor-pointer ${
-                i === 1 ? "md:mt-16" : ""
-              } ${i === 2 ? "lg:mt-32" : ""}`}
-            >
-              <div className="overflow-hidden rounded-[2rem] aspect-[4/5] mb-6 shadow-xl shadow-black/5">
-                <img
-                  src={item.img}
-                  alt={item.title}
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-all duration-700"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              <div className="flex justify-between items-center px-2">
-                <h3 className="text-black">{item.title}</h3>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-widest m-0">
-                  {item.tags}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
   );
 };
 
@@ -404,199 +371,10 @@ const HomeEventIntroSection = () => (
   </section>
 );
 
-type CaseStudiesSectionProps = {
-  showTopBorder?: boolean;
-};
-
-export const CaseStudiesSection = ({ showTopBorder = true }: CaseStudiesSectionProps) => {
-  const clients = [
-    {
-      name: "물품보관소",
-      desc: "잔디광장에서 물품을 무료로 맡길 수 있습니다.",
-    },
-    {
-      name: "완주 메달 각인 서비스",
-      desc: "완주 메달에 이름과 기록을 레이저로 각인합니다.\n*비용: 3,000원",
-    },
-    {
-      name: "하이원 워터월드",
-      desc: "최대 할인된 금액으로 샤워 및 휴식을 즐길 수 있습니다.\n*하이원 호텔 사우나는 공사로 인해 미운영",
-    },
-  ];
-
-  return (
-    <section
-      data-section="cases"
-      className={`cases ${showTopBorder ? homeBorderFrameClassName : homeFrameClassName}`}
-    >
-      <div
-        data-block="cases-wrap"
-        className="cases-wrap grid grid-cols-1 lg:grid-cols-4 gap-12"
-      >
-        <div className="lg:col-span-1">
-          <h2>
-            편의
-            <br />
-            시설
-          </h2>
-        </div>
-        <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {clients.map((client) => (
-            <div
-              key={client.name}
-              className="bg-white p-8 rounded-[2rem] shadow-xl shadow-black/5 border border-black/5"
-            >
-              <h3 className="text-black mb-4">{client.name}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">{client.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export const BrandListSection = () => {
-  const brands = [
-    "Woolworths",
-    "Sneaker LAB",
-    "HKLM",
-    "Digital Liquorice",
-    "Batoka Hospitality",
-    "Sendmarc",
-    "Vana",
-    "Fairways to Africa",
-  ];
-
-  return (
-    <section
-      data-section="brands"
-      className={`brands ${homeFrameClassName} bg-black text-white`}
-    >
-      <div data-block="brands-wrap" className="brands-wrap">
-        <h2 className="mb-16 text-center">함께한 브랜드</h2>
-        <div className="flex flex-wrap justify-center gap-4 md:gap-8">
-          {brands.map((brand) => (
-            <p
-              key={brand}
-              className="px-6 py-3 rounded-full border border-white/20 text-sm font-medium m-0"
-            >
-              {brand}
-            </p>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export const TeamShowcaseSection = () => {
-  const team = [
-    {
-      img: "/images/team1-600x800.jpg",
-      name: "Julian Dallamore",
-      role: "Founder / MD",
-    },
-    {
-      img: "/images/team2-600x800.jpg",
-      name: "Chev Beckley",
-      role: "UI/UX Designer",
-    },
-    {
-      img: "/images/team3-600x800.jpg",
-      name: "Rogan Jansen",
-      role: "Founder / CD",
-    },
-    {
-      img: "/images/team4-600x800.jpg",
-      name: "James Blyth",
-      role: "Developer",
-    },
-  ];
-
-  return (
-    <section
-      data-section="team"
-      className={`team ${homeBorderFrameClassName}`}
-    >
-      <div data-block="team-wrap" className="team-wrap">
-        <div className="flex justify-between items-end mb-16">
-          <h2>팀 소개</h2>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-          {team.map((member) => (
-            <div
-              key={member.name}
-              className="flex flex-col items-center text-center group cursor-pointer"
-            >
-              <div className="w-full aspect-square rounded-full overflow-hidden mb-5 border-4 border-white group-hover:border-gray-200 transition-colors duration-500">
-                <img
-                  src={member.img}
-                  alt={member.name}
-                  className="w-full h-full object-cover transition-all duration-700"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              <h3 className="text-black mb-1">{member.name}</h3>
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-widest">
-                {member.role}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export const AwardsListSection = () => {
-  const awards = [
-    {
-      name: "AWWWARDS",
-      details:
-        "1x Studio of the Year Nominee\n1x Site of the Month\n5x Site of the Day",
-    },
-    { name: "THE FWA", details: "8x FWA of the Day" },
-    {
-      name: "CSS DESIGN AWARDS",
-      details: "1x Website of the Year Nominee\n10x Website of the Day",
-    },
-  ];
-
-  return (
-    <section
-      data-section="awards"
-      className={`awards ${homeFrameClassName} bg-gray-100`}
-    >
-      <div
-        data-block="awards-wrap"
-        className="awards-wrap grid grid-cols-1 lg:grid-cols-4 gap-12"
-      >
-        <div className="lg:col-span-1">
-          <h2>수상 및 성과</h2>
-        </div>
-        <div className="lg:col-span-3 flex flex-col gap-6">
-          {awards.map((award) => (
-            <div
-              key={award.name}
-              className="bg-white p-8 rounded-[2rem] shadow-xl shadow-black/5 flex flex-col md:flex-row md:items-center justify-between"
-            >
-              <h3 className="text-black mb-4 md:mb-0">{award.name}</h3>
-              <div className="text-sm text-gray-600 whitespace-pre-line text-left md:text-right leading-relaxed">
-                {award.details}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const HomeNoticesSection = () => (
   <section
     data-section="home-notices"
-    className="home-notices relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-gray-50"
+    className="home-notices relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-gray-50 layout-band"
   >
     <div
       aria-hidden="true"
@@ -604,7 +382,7 @@ const HomeNoticesSection = () => (
     />
     <div
       data-block="home-notices-wrap"
-      className={`home-notices-wrap ${homeFrameClassName}`}
+      className="home-notices-wrap layout-shell"
     >
       <div className="flex justify-between items-end mb-[30px]">
         <h2>공지사항</h2>
@@ -622,229 +400,6 @@ const HomeNoticesSection = () => (
     </div>
   </section>
 );
-
-export const InsightsGridSection = () => {
-  const articles = [
-    {
-      type: "Interview",
-      title: "Sneaker LAB x New Balance Sneaker Wipes",
-      date: "12.10.21",
-      img: "/images/art1-800x600.jpg",
-    },
-    {
-      type: "Article",
-      title: "Top tips to take care of your running shoes",
-      date: "12.10.21",
-      img: "/images/art2-800x600.jpg",
-    },
-    {
-      type: "Article",
-      title: "The top 25 best sneakers of 2021",
-      date: "11.10.21",
-      img: "/images/art3-800x600.jpg",
-    },
-  ];
-
-  return (
-    <section
-      data-section="insights"
-      className={`insights ${homeBorderFrameClassName}`}
-    >
-      <div data-block="insights-wrap" className="insights-wrap">
-        <div className="flex justify-between items-end mb-16">
-          <h2>최신 인사이트</h2>
-          <Link
-            href="/insights"
-            className="text-sm font-medium text-gray-600 hover:text-black transition-colors flex items-center border-b border-gray-400/30 pb-1"
-          >
-            전체 인사이트 보기 <ArrowRight size={16} className="ml-2" />
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {articles.map((article) => (
-            <div key={article.title} className="flex flex-col group cursor-pointer">
-              <div className="overflow-hidden rounded-[2rem] aspect-[4/3] mb-6 shadow-xl shadow-black/5">
-                <img
-                  src={article.img}
-                  alt={article.title}
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-all duration-700"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              <div className="flex items-center gap-3 mb-3">
-                <p className="px-3 py-1 bg-gray-100 rounded-full text-[0.6667rem] uppercase tracking-widest text-gray-600 m-0">
-                  {article.type}
-                </p>
-                <p className="text-xs text-gray-500 m-0">{article.date}</p>
-              </div>
-              <h3 className="text-black leading-snug group-hover:text-gray-500 transition-colors">
-                {article.title}
-              </h3>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export const SouvenirSizeGuideSection = () => {
-  const sizeChartRows = [
-    { size: "S", chest: "48", length: "65.5" },
-    { size: "M", chest: "50.5", length: "66.5" },
-    { size: "L", chest: "53", length: "69" },
-    { size: "XL", chest: "60", length: "72" },
-    { size: "2XL", chest: "63", length: "74" },
-  ];
-  const maxChest = Math.max(...sizeChartRows.map((row) => Number(row.chest)));
-  const maxLength = Math.max(...sizeChartRows.map((row) => Number(row.length)));
-
-  return (
-    <section
-      data-section="souvenir-size"
-      className={`souvenir-size ${homeBorderFrameClassName} bg-gray-50`}
-    >
-      <div
-        data-block="souvenir-size-wrap"
-        className="souvenir-size-wrap"
-      >
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="flex-1">
-            <div className="overflow-x-auto">
-              <table className="w-full text-center text-base">
-                <thead>
-                  <tr className="bg-[#F5F5F5]">
-                    <th className="py-5 font-medium text-gray-700">사이즈</th>
-                    <th className="py-5 font-medium text-gray-700">A. 가슴단면</th>
-                    <th className="py-5 font-medium text-gray-700">B. 총기장</th>
-                  </tr>
-                </thead>
-                <tbody className="text-gray-800">
-                  {sizeChartRows.map((row) => (
-                    <tr
-                      key={`home-base-${row.size}`}
-                      className="border-b border-gray-100 hover:bg-gray-50/50 transition-colors"
-                    >
-                      <td className="py-5 font-bold text-gray-900">{row.size}</td>
-                      <td className="py-5">{row.chest}</td>
-                      <td className="py-5">{row.length}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)] mt-5">
-              <table className="w-full text-center text-base bg-white">
-                <thead>
-                  <tr className="bg-[#FFF9E6]">
-                    <th className="py-4 font-semibold text-orange-600">사이즈</th>
-                    <th className="py-4 font-semibold text-orange-600">A. 가슴단면</th>
-                    <th className="py-4 font-semibold text-orange-600">B. 총기장</th>
-                  </tr>
-                </thead>
-                <tbody className="text-gray-900">
-                  {sizeChartRows.map((row) => (
-                    <tr key={`home-alt-${row.size}`} className="border-t border-gray-200">
-                      <td className="py-4 font-bold">{row.size}</td>
-                      <td className="py-4">{row.chest}</td>
-                      <td className="py-4">{row.length}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <div className="mt-5">
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                {sizeChartRows.map((row) => (
-                  <div
-                    key={`home-card-${row.size}`}
-                    className="bg-white rounded-2xl border border-gray-200 p-4 text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
-                  >
-                    <p className="text-black font-bold m-0 mb-2">{row.size}</p>
-                    <p className="text-sm text-gray-500 m-0">A. 가슴단면 {row.chest}cm</p>
-                    <p className="text-sm text-gray-500 m-0">B. 총기장 {row.length}cm</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-5 bg-[#F5F5F5] rounded-[2rem] border border-black/5 p-5 md:p-6">
-              <p className="m-0 mb-4 text-sm text-gray-600 font-semibold tracking-wide">
-                SIZE GUIDE / BAR VIEW
-              </p>
-              <div className="space-y-3">
-                {sizeChartRows.map((row) => (
-                  <div
-                    key={`home-bar-${row.size}`}
-                    className="bg-white rounded-2xl border border-gray-200 p-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
-                  >
-                    <div className="flex items-center justify-between mb-3">
-                      <p className="m-0 text-black font-bold">{row.size}</p>
-                      <p className="m-0 text-xs text-gray-500">
-                        A {row.chest}cm / B {row.length}cm
-                      </p>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div>
-                        <div className="flex items-center justify-between mb-1">
-                          <p className="m-0 text-xs text-gray-500">A. 가슴단면</p>
-                          <p className="m-0 text-xs text-black font-semibold">{row.chest}cm</p>
-                        </div>
-                        <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
-                          <div
-                            className="h-full rounded-full bg-[#A8FF00]"
-                            style={{ width: `${(Number(row.chest) / maxChest) * 100}%` }}
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="flex items-center justify-between mb-1">
-                          <p className="m-0 text-xs text-gray-500">B. 총기장</p>
-                          <p className="m-0 text-xs text-black font-semibold">{row.length}cm</p>
-                        </div>
-                        <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
-                          <div
-                            className="h-full rounded-full bg-[#FF9000]"
-                            style={{ width: `${(Number(row.length) / maxLength) * 100}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-5 rounded-[2rem] overflow-hidden font-[var(--font-body)] text-[var(--fs-body)] leading-[var(--leading-default)]">
-              <div className="divide-y divide-gray-200 w-[90%] mx-auto">
-                {sizeChartRows.map((row) => (
-                  <div
-                    key={`home-list-${row.size}`}
-                    className="py-4 grid grid-cols-[64px_1fr] sm:grid-cols-[72px_1fr] items-center gap-3 sm:gap-4"
-                  >
-                    <div className="inline-flex items-center justify-center w-[52px] sm:w-[56px] h-9 rounded-full bg-[#A8FF00]/20 text-black font-bold">
-                      {row.size}
-                    </div>
-                    <div className="text-left text-gray-500 grid grid-cols-[88px_minmax(0,1fr)_70px_minmax(0,1fr)] sm:grid-cols-[90px_72px_80px_72px] items-center gap-x-1 sm:gap-x-2">
-                      <span>A. 가슴단면</span>
-                      <span className="text-black font-semibold whitespace-nowrap">{row.chest}cm</span>
-                      <span>B. 총기장</span>
-                      <span className="text-black font-semibold whitespace-nowrap">{row.length}cm</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
 
 export default function Home() {
   return (
