@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const overviewType = {
   introText: "m-0 typo-body-medium text-[#181818]",
@@ -67,6 +67,41 @@ const overviewConveniences = [
   {
     name: "하이원 워터월드",
     desc: "최대 할인된 금액으로 샤워 및 휴식을 즐길 수 있습니다.\n*하이원 호텔 사우나는 공사로 인해 미운영",
+  },
+];
+
+type OverviewTimetableDay = 'day1' | 'day2';
+
+const overviewTimetableDays: Array<{
+  id: OverviewTimetableDay;
+  label: string;
+  items: Array<{ time: string; event: string; desc: string }>;
+}> = [
+  {
+    id: 'day1',
+    label: '9/12(토)',
+    items: [
+      { time: '07:30 - 08:00', event: '참가자 등록 및 장비 체크', desc: '30K 참가자 등록 및 현장 체크' },
+      { time: '07:30', event: '물품보관소 오픈', desc: '행사장 내 물품보관소 운영 시작' },
+      { time: '08:00', event: '30K 출발', desc: 'A그룹 08:00 / B그룹 08:20' },
+      { time: '09:00', event: '20K 출발', desc: 'A그룹 08:50 / B그룹 09:10 / C그룹 09:40 / D그룹 10:00' },
+      { time: '10:10', event: '12K 출발', desc: 'A그룹 10:10 / B그룹 10:20 / C그룹 10:30' },
+      { time: '12:00', event: '기념품 수령소 오픈', desc: '완주자 대상 기념품 수령 시작' },
+      { time: '15:00', event: '시상식', desc: '30K·20K 요일별 남녀 1위 시상' },
+      { time: '17:00', event: '1일차 종료', desc: '현장 운영 마감' },
+    ],
+  },
+  {
+    id: 'day2',
+    label: '9/13(일)',
+    items: [
+      { time: '08:00', event: '참가자 등록 및 장비 체크', desc: '20K·12K 참가자 등록 및 현장 체크' },
+      { time: '08:00', event: '물품보관소 오픈', desc: '행사장 내 물품보관소 운영 시작' },
+      { time: '09:00', event: '20K 출발', desc: 'A그룹 08:50 / B그룹 09:10 / C그룹 09:40 / D그룹 10:00' },
+      { time: '09:40', event: '12K 출발', desc: 'A그룹 09:40 / B그룹 09:50 / C그룹 10:00' },
+      { time: '12:00', event: '기념품 수령소 오픈', desc: '완주자 대상 기념품 수령 시작' },
+      { time: '17:00', event: '2일차 및 공식 행사 종료', desc: '현장 운영 마감' },
+    ],
   },
 ];
 
@@ -651,6 +686,7 @@ const OverviewCampaignSection = () => (
 );
 
 const Overview = () => {
+  const [activeTimetableDay, setActiveTimetableDay] = useState<OverviewTimetableDay>('day1');
   const overviewCopy = {
     eventName: "빵트레일런",
     eventDate: "2026년 9월 11일(금) - 13일(일)",
@@ -762,17 +798,30 @@ const Overview = () => {
         </div>
 
         <div className="border border-black/5 rounded-[2rem] bg-gray-50 p-8 md:p-12">
+          <div className="mb-8 flex justify-center">
+            <div className="bg-white p-1 rounded-full inline-flex border border-black/5">
+              {overviewTimetableDays.map((day) => (
+                <button
+                  key={day.id}
+                  type="button"
+                  onClick={() => setActiveTimetableDay(day.id)}
+                  className={`px-6 py-2.5 rounded-full typo-h6-medium transition-colors ${
+                    activeTimetableDay === day.id ? 'bg-black text-white' : 'text-gray-500 hover:text-black'
+                  }`}
+                >
+                  {day.label}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="flex flex-col">
-            {[
-              { time: "08:00 - 09:00", event: "참가자 집결 및 물품 보관", desc: "행사장 내 물품보관소 이용" },
-              { time: "09:00 - 09:30", event: "개회식 및 준비운동", desc: "메인 무대 앞" },
-              { time: "09:30", event: "30K 부문 출발", desc: "출발선 대기 및 순차 출발" },
-              { time: "10:00", event: "20K 부문 출발", desc: "출발선 대기 및 순차 출발" },
-              { time: "10:30", event: "12K 부문 출발", desc: "출발선 대기 및 순차 출발" },
-              { time: "14:00 - 15:00", event: "시상식 및 럭키드로우", desc: "각 부문별 시상 및 경품 추첨" },
-              { time: "18:00", event: "행사 종료", desc: "안전 귀가" }
-            ].map((item, i) => (
-              <div key={i} className={`flex flex-col md:flex-row gap-4 md:gap-12 py-6 ${i !== 6 ? 'border-b border-black/5' : ''}`}>
+            {overviewTimetableDays
+              .find((day) => day.id === activeTimetableDay)
+              ?.items.map((item, i, items) => (
+              <div
+                key={`${activeTimetableDay}-${item.time}-${item.event}`}
+                className={`flex flex-col md:flex-row gap-4 md:gap-12 py-6 ${i !== items.length - 1 ? 'border-b border-black/5' : ''}`}
+              >
                 <div className="md:w-1/3">
                   <h4 className={type.timetableTime}>{item.time}</h4>
                 </div>

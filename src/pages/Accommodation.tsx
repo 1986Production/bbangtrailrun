@@ -4,34 +4,48 @@ import { useEffect, useState } from 'react';
 import { AlertCircle, ArrowDown, ArrowUpRight, MapPin, Minus, Plus } from 'lucide-react';
 import AccommodationCalendarSection from '@/src/components/AccommodationCalendarSection';
 
-const pricingData = [
-  { category: '마운틴', type: '마운틴 디럭스 (35평)', prices: ['120,000원', '190,000원', '100,000원'], status: ['green', 'green', 'green'] },
-  { category: '마운틴', type: '마운틴 디럭스 온돌 (35평)', prices: ['120,000원', '190,000원', '100,000원'], status: ['green', 'green', 'green'] },
-  { category: '마운틴', type: '마운틴 그랜드 디럭스 (35평)', prices: ['120,000원', '190,000원', '100,000원'], status: ['green', 'green', 'green'] },
-  { category: '마운틴', type: '마운틴 클린룸 (35평)', prices: ['120,000원', '190,000원', '100,000원'], status: ['green', 'green', 'green'] },
-  { category: '마운틴', type: '마운틴 패밀리룸 (35평)', prices: ['120,000원', '190,000원', '100,000원'], status: ['red', 'green', 'green'] },
-  { category: '마운틴', type: '마운틴 패밀리가든 (50평)', prices: ['170,000원', '250,000원', '140,000원'], status: ['green', 'green', 'green'] },
-  { category: '마운틴', type: '마운틴 패밀리 스위트 (50평)', prices: ['170,000원', '250,000원', '140,000원'], status: ['green', 'green', 'green'] },
-  { category: '힐', type: '힐 슈페리어 (30평)', prices: ['100,000원', '160,000원', ''], status: ['red', 'green', 'none'] },
-  { category: '힐', type: '힐 슈페리어 온돌 (30평)', prices: ['100,000원', '160,000원', ''], status: ['green', 'green', 'none'] },
-  { category: '힐', type: '힐 그랜드 디럭스 (35평)', prices: ['110,000원', '180,000원', ''], status: ['green', 'green', 'none'] },
-  { category: '힐', type: '힐 갤러리 스위트 (40평)', prices: ['120,000원', '190,000원', ''], status: ['green', 'green', 'none'] },
-  { category: '힐', type: '힐 펫 룸', prices: ['150,000원', '230,000원', ''], status: ['green', 'green', 'none'] },
-  { category: '그랜드호텔', type: '컨벤션 슈페리어 더블', prices: ['160,000원', '210,000원', ''], status: ['green', 'green', 'none'] },
-  { category: '그랜드호텔', type: '컨벤션 슈페리어 트윈', prices: ['160,000원', '210,000원', ''], status: ['green', 'green', 'none'] },
-];
-
 const pricingDateHeaders = ['9/11(금)', '9/12(토)', '9/13(일)'];
 const pricingDateHeaderDisplays = pricingDateHeaders.map((label) => `${label} 체크인`);
 const pricingCalendarDays = pricingDateHeaders.map((label) => Number(label.match(/^\d+\/(\d+)/)?.[1] ?? 0));
 const BOOKING_PANEL_COACHMARK_KEY = 'bbangtrailrun-accommodation-booking-coachmark-v1';
+const pricingStatusDotClass = 'inline-flex h-2 w-2 rounded-full bg-gray-400';
+const pricingStatusPillClass =
+  'inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-3 py-1.5 typo-h6-medium font-normal text-gray-500 whitespace-nowrap';
+const pricingStatusLabel = '현재 판매전';
 
 type PricingAvailabilityStatus = 'green' | 'red' | 'none';
+type PricingRow = {
+  category: string;
+  type: string;
+  occupancy: string;
+  prices: [string, string, string];
+  status: [PricingAvailabilityStatus, PricingAvailabilityStatus, PricingAvailabilityStatus];
+};
+
+const pricingData: PricingRow[] = [
+  { category: '마운틴 콘도', type: '마운틴 클린룸(35평)', occupancy: '5인(7인)', prices: ['120,000원', '190,000원', '100,000원'], status: ['green', 'green', 'green'] },
+  { category: '마운틴 콘도', type: '마운틴 그랜드 디럭스(35평)', occupancy: '4인(6인)', prices: ['120,000원', '190,000원', '100,000원'], status: ['green', 'green', 'green'] },
+  { category: '힐 콘도', type: '힐 슈페리어 침대(30평)', occupancy: '4인(6인)', prices: ['100,000원', '160,000원', '90,000원'], status: ['green', 'green', 'green'] },
+  { category: '힐 콘도', type: '힐 슈페리어 온돌(30평)', occupancy: '4인(6인)', prices: ['100,000원', '160,000원', '90,000원'], status: ['green', 'green', 'green'] },
+  { category: '힐 콘도', type: '힐 그랜드 디럭스(35평)', occupancy: '5인(7인)', prices: ['110,000원', '180,000원', '100,000원'], status: ['green', 'green', 'green'] },
+  { category: '힐 콘도', type: '힐 갤러리 스위트(40평)', occupancy: '5인(7인)', prices: ['120,000원', '190,000원', '100,000원'], status: ['green', 'green', 'green'] },
+  { category: '힐 콘도', type: '힐 테라스 스위트(40평)', occupancy: '5인(7인)', prices: ['120,000원', '190,000원', '100,000원'], status: ['green', 'green', 'green'] },
+  { category: '힐 콘도', type: '힐 펫 룸(40평)', occupancy: '5인(7인)', prices: ['150,000원', '230,000원', '110,000원'], status: ['green', 'green', 'green'] },
+  { category: '밸리 콘도', type: '밸리 스탠다드 더블(16평)', occupancy: '2인(3인)', prices: ['95,000원', '150,000원', '80,000원'], status: ['green', 'green', 'green'] },
+  { category: '밸리 콘도', type: '밸리 스탠다드 온돌(16평)', occupancy: '2인(3인)', prices: ['95,000원', '150,000원', '80,000원'], status: ['green', 'green', 'green'] },
+  { category: '밸리 콘도', type: '밸리 슈페리어 패밀리(30평)', occupancy: '4인(6인)', prices: ['100,000원', '160,000원', ''], status: ['green', 'green', 'none'] },
+  { category: '밸리 콘도', type: '밸리 코너 스위트(50평)', occupancy: '6인(8인)', prices: ['170,000원', '250,000원', '130,000원'], status: ['green', 'green', 'green'] },
+  { category: '컨벤션 호텔', type: '슈페리어 더블', occupancy: '2인', prices: ['200,000원', '270,000원', '190,000원'], status: ['green', 'green', 'green'] },
+  { category: '컨벤션 호텔', type: '슈페리어 트윈', occupancy: '2인', prices: ['200,000원', '270,000원', '190,000원'], status: ['green', 'green', 'green'] },
+  { category: '컨벤션 호텔', type: '슈페리어 트리플', occupancy: '3인', prices: ['210,000원', '280,000원', '200,000원'], status: ['green', 'green', 'green'] },
+];
+
 type PricingSelection = {
   rowIndex: number;
   dateIndex: number;
   category: string;
   type: string;
+  occupancy: string;
   dateLabel: string;
   dateDisplayLabel: string;
   price: string;
@@ -39,8 +53,8 @@ type PricingSelection = {
 
 const getPricingStatusMeta = (status: string | undefined) => {
   return {
-    label: '판매전',
-    badgeClass: 'inline-flex items-center rounded-full border border-gray-300 bg-gray-100 px-2.5 py-1 typo-h6-medium text-gray-500',
+    textClass: 'inline-flex items-center gap-1.5 typo-h6-medium text-gray-500',
+    dotClass: pricingStatusDotClass,
   };
 };
 
@@ -70,6 +84,7 @@ const getPricingSelection = (rowIndex: number | null, dateIndex: number | null):
     dateIndex,
     category: selectedRow.category,
     type: selectedRow.type,
+    occupancy: selectedRow.occupancy,
     dateLabel: pricingDateHeaders[dateIndex],
     dateDisplayLabel: pricingDateHeaderDisplays[dateIndex],
     price: selectedPrice,
@@ -83,7 +98,7 @@ const buildBookingHref = (selection: PricingSelection | null) =>
       )}&price=${encodeURIComponent(selection.price)}`
     : null;
 
-type LodgingMapType = 'hill' | 'mountain' | 'grand';
+type LodgingMapType = 'hill' | 'mountain' | 'valley' | 'grand';
 
 type LodgingMethod = {
   label: string;
@@ -101,46 +116,61 @@ type LodgingLocationContent = {
 
 const lodgingLocationContent: Record<LodgingMapType, LodgingLocationContent> = {
   hill: {
-    name: '힐콘도',
-    mapLabel: '힐콘도 지도 영역',
-    routeToVenue: '힐콘도 → 잔디광장(행사장)',
+    name: '힐 콘도',
+    mapLabel: '힐 콘도 지도 영역',
+    routeToVenue: '힐 콘도 → 잔디광장(행사장)',
     address: '강원 정선군 고한읍 하이원길 424, 하이원 리조트',
     methods: [
-      { label: '방법 1.', text: '힐콘도 정문(드롭오프 구역)으로 진입' },
-      { label: '방법 2.', text: '힐콘도 주차장 주차 후 이동' },
+      { label: '방법 1.', text: '힐 콘도 정문(드롭오프 구역)으로 진입' },
+      { label: '방법 2.', text: '힐 콘도 주차장 주차 후 이동' },
       {
         label: '방법 3.',
-        text: '힐콘도에서 잔디광장(행사장)으로 이동',
+        text: '힐 콘도에서 잔디광장(행사장)으로 이동',
         detail: '현장 표지판 또는 운영 스태프 안내에 따라 이동해 주세요.',
       },
     ],
   },
   mountain: {
-    name: '마운틴콘도',
-    mapLabel: '마운틴콘도 지도 영역',
-    routeToVenue: '마운틴콘도 → 잔디광장(행사장)',
+    name: '마운틴 콘도',
+    mapLabel: '마운틴 콘도 지도 영역',
+    routeToVenue: '마운틴 콘도 → 잔디광장(행사장)',
     address: '강원 정선군 고한읍 하이원길 265-1',
     methods: [
-      { label: '방법 1.', text: '마운틴콘도 정문(드롭오프 구역)으로 진입' },
-      { label: '방법 2.', text: '마운틴콘도 주차장 주차 후 이동' },
+      { label: '방법 1.', text: '마운틴 콘도 정문(드롭오프 구역)으로 진입' },
+      { label: '방법 2.', text: '마운틴 콘도 주차장 주차 후 이동' },
       {
         label: '방법 3.',
-        text: '마운틴콘도에서 잔디광장(행사장)으로 이동',
+        text: '마운틴 콘도에서 잔디광장(행사장)으로 이동',
+        detail: '현장 표지판 또는 운영 스태프 안내에 따라 이동해 주세요.',
+      },
+    ],
+  },
+  valley: {
+    name: '밸리 콘도',
+    mapLabel: '밸리 콘도 지도 영역',
+    routeToVenue: '밸리 콘도 → 잔디광장(행사장)',
+    address: '강원 정선군 사북읍 하이원 리조트 밸리 콘도',
+    methods: [
+      { label: '방법 1.', text: '밸리 콘도 정문(드롭오프 구역)으로 진입' },
+      { label: '방법 2.', text: '밸리 콘도 주차장 주차 후 이동' },
+      {
+        label: '방법 3.',
+        text: '밸리 콘도에서 잔디광장(행사장)으로 이동',
         detail: '현장 표지판 또는 운영 스태프 안내에 따라 이동해 주세요.',
       },
     ],
   },
   grand: {
-    name: '그랜드호텔',
-    mapLabel: '그랜드호텔 지도 영역',
-    routeToVenue: '그랜드호텔 → 잔디광장(행사장)',
+    name: '컨벤션 호텔',
+    mapLabel: '컨벤션 호텔 지도 영역',
+    routeToVenue: '컨벤션 호텔 → 잔디광장(행사장)',
     address: '강원 정선군 사북읍 하이원길 265',
     methods: [
-      { label: '방법 1.', text: '그랜드호텔 정문(드롭오프 구역)으로 진입' },
-      { label: '방법 2.', text: '그랜드호텔 주차장 주차 후 이동' },
+      { label: '방법 1.', text: '컨벤션 호텔 정문(드롭오프 구역)으로 진입' },
+      { label: '방법 2.', text: '컨벤션 호텔 주차장 주차 후 이동' },
       {
         label: '방법 3.',
-        text: '그랜드호텔에서 잔디광장(행사장)으로 이동',
+        text: '컨벤션 호텔에서 잔디광장(행사장)으로 이동',
         detail: '현장 표지판 또는 운영 스태프 안내에 따라 이동해 주세요.',
       },
     ],
@@ -168,7 +198,7 @@ const Accommodation = () => {
   const dateColumnStatuses = pricingDateHeaders.map((_, index) => getDateColumnStatus(index));
   const selectedPricing = getPricingSelection(
     activePricingCell.row,
-    activePricingCell.col !== null ? activePricingCell.col - 2 : null
+    activePricingCell.col !== null ? activePricingCell.col - 3 : null
   );
   const selectedBookingHref = buildBookingHref(selectedPricing);
   const mobileSelectedPricing = hasMobileDateSelection
@@ -218,14 +248,14 @@ const Accommodation = () => {
     setIsMobileRoomAccordionOpen(false);
 
     if (nextSelection) {
-      setActivePricingCell({ row: nextSelection.rowIndex, col: nextSelection.dateIndex + 2 });
+      setActivePricingCell({ row: nextSelection.rowIndex, col: nextSelection.dateIndex + 3 });
       return;
     }
 
     if (
       mobileSelectedRoomIndex !== null &&
       activePricingCell.row === mobileSelectedRoomIndex &&
-      activePricingCell.col === mobileSelectedDateIndex + 2
+      activePricingCell.col === mobileSelectedDateIndex + 3
     ) {
       setActivePricingCell({ row: null, col: null });
     }
@@ -246,7 +276,7 @@ const Accommodation = () => {
     if (mobileSelectedRoomIndex === rowIndex) {
       setMobileSelectedRoomIndex(null);
       setIsMobileRoomAccordionOpen(true);
-      if (activePricingCell.row === rowIndex && activePricingCell.col === mobileSelectedDateIndex + 2) {
+      if (activePricingCell.row === rowIndex && activePricingCell.col === mobileSelectedDateIndex + 3) {
         setActivePricingCell({ row: null, col: null });
       }
       return;
@@ -254,7 +284,7 @@ const Accommodation = () => {
 
     setMobileSelectedRoomIndex(rowIndex);
     setIsMobileRoomAccordionOpen(false);
-    setActivePricingCell({ row: rowIndex, col: mobileSelectedDateIndex + 2 });
+    setActivePricingCell({ row: rowIndex, col: mobileSelectedDateIndex + 3 });
   };
 
   const handleCalendarDateSelect = (day: number) => {
@@ -306,16 +336,16 @@ const Accommodation = () => {
             <h2 className="heading-ko">객실 요금 및 예약</h2>
           </div>
           <div className="mt-6 hidden items-center typo-h6-medium text-gray-500 md:flex lg:mt-0" data-role="pricing-status">
-            <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-3 py-1.5" data-role="pricing-status-pill">
-              <span className="w-2 h-2 rounded-full bg-black/70" data-role="pricing-status-dot"></span>
-              현재 판매전
+            <span className={pricingStatusPillClass} data-role="pricing-status-pill">
+              <span className={pricingStatusDotClass} data-role="pricing-status-dot"></span>
+              <span>{pricingStatusLabel}</span>
             </span>
           </div>
         </div>
         <div className="hidden md:block">
           <div className="overflow-x-auto rounded-[1.25rem] border border-black/10 bg-white">
             <table
-              className="w-full min-w-[46rem] text-left whitespace-nowrap font-[var(--font-body)] text-[var(--fs-body)] leading-[var(--leading-default)] text-gray-500"
+              className="w-full min-w-[62rem] text-left whitespace-nowrap font-[var(--font-body)] text-[var(--fs-body)] leading-[var(--leading-default)] text-gray-500"
               onMouseLeave={() => setHoveredPricingCell({ row: null, col: null })}
             >
               <thead className="border-b border-black/10 text-black">
@@ -332,19 +362,28 @@ const Accommodation = () => {
                   >
                     타입
                   </th>
+                  <th
+                    className={`py-6 px-8 font-bold text-center w-40 transition-colors ${getPricingCrossHighlightClass(false, hoveredPricingCell.col === 2)}`}
+                    onMouseEnter={() => setHoveredPricingCell({ row: null, col: 2 })}
+                  >
+                    <span className="inline-flex flex-col items-center leading-tight">
+                      <span>기준 인원</span>
+                      <span>(최대인원)</span>
+                    </span>
+                  </th>
                   {pricingDateHeaderDisplays.map((dateHeader, dateIndex) => {
-                    const tableCol = dateIndex + 2;
-                    const headerStatusMeta = getPricingStatusMeta(dateColumnStatuses[dateIndex]);
+                    const tableCol = dateIndex + 3;
                     return (
                       <th
                         key={dateHeader}
-                        className={`py-6 px-8 font-bold text-center w-32 transition-colors ${getPricingCrossHighlightClass(false, hoveredPricingCell.col === tableCol)}`}
+                        className={`py-6 px-8 font-bold text-center w-40 transition-colors ${getPricingCrossHighlightClass(false, hoveredPricingCell.col === tableCol)}`}
                         onMouseEnter={() => setHoveredPricingCell({ row: null, col: tableCol })}
                       >
                         <div className="flex flex-col items-center gap-2">
                           <span>{dateHeader}</span>
-                          <span className={headerStatusMeta.badgeClass}>
-                            {headerStatusMeta.label}
+                          <span className={pricingStatusPillClass}>
+                            <span className={pricingStatusDotClass} aria-hidden="true" />
+                            <span>{pricingStatusLabel}</span>
                           </span>
                         </div>
                       </th>
@@ -388,8 +427,17 @@ const Accommodation = () => {
                       >
                         {row.type}
                       </td>
+                      <td
+                        className={`py-6 px-8 text-center font-medium text-gray-500 transition-colors ${getPricingCrossHighlightClass(
+                          isHoveredRow,
+                          hoveredPricingCell.col === 2 || activePricingCell.col === 2
+                        )}`}
+                        onMouseEnter={() => setHoveredPricingCell({ row: idx, col: 2 })}
+                      >
+                        {row.occupancy}
+                      </td>
                       {[0, 1, 2].map((priceIndex) => {
-                        const tableCol = priceIndex + 2;
+                        const tableCol = priceIndex + 3;
                         const price = row.prices[priceIndex];
                         const status = row.status[priceIndex];
                         const isAvailable = Boolean(price) && status !== 'none';
@@ -418,7 +466,9 @@ const Accommodation = () => {
                               <>
                                 <span className={`inline-flex flex-col items-center gap-1 transition-opacity duration-200 sm:group-hover:opacity-0 sm:group-focus-visible:opacity-0 ${isActiveCell ? 'sm:opacity-0' : ''}`}>
                                   <span className="inline-flex items-center gap-1.5">
-                                    <span className="inline-flex items-center rounded-full border border-gray-300 bg-gray-100 px-2 py-1 typo-h6-medium text-gray-500">판매전</span>
+                                    <span className="inline-flex items-center gap-1.5 typo-h6-medium text-gray-500">
+                                      <span className={pricingStatusDotClass} aria-hidden="true" />
+                                    </span>
                                     <span className="font-medium text-black">{price}</span>
                                   </span>
                                   <span className={`sm:hidden typo-h6-medium ${isActiveCell ? 'text-black font-medium' : 'text-transparent'}`}>
@@ -594,7 +644,7 @@ const Accommodation = () => {
                 {isMobileRoomAccordionOpen ? (
                   <div className="border-t border-black/10 px-4 pb-4 pt-3">
                     <div className="space-y-3">
-                      {mobilePricingRows.map(({ row, rowIndex, selection }) => {
+      {mobilePricingRows.map(({ row, rowIndex, selection }) => {
                         const isSelected = mobileSelectedRoomIndex === rowIndex;
                         const isAvailable = Boolean(selection);
 
@@ -631,11 +681,18 @@ const Accommodation = () => {
                                     <span
                                       className={
                                         isSelected
-                                          ? 'inline-flex items-center rounded-full border border-white/15 bg-white/10 px-2.5 py-1 typo-h6-medium text-white'
-                                          : getPricingStatusMeta(row.status[mobileSelectedDateIndex]).badgeClass
+                                          ? 'inline-flex items-center gap-1.5 typo-h6-medium text-white'
+                                          : getPricingStatusMeta(row.status[mobileSelectedDateIndex]).textClass
                                       }
                                     >
-                                      {getPricingStatusMeta(row.status[mobileSelectedDateIndex]).label}
+                                      <span
+                                        className={
+                                          isSelected
+                                            ? 'inline-flex h-4 w-4 rounded-full bg-white/80'
+                                            : getPricingStatusMeta(row.status[mobileSelectedDateIndex]).dotClass
+                                        }
+                                        aria-hidden="true"
+                                      />
                                     </span>
                                   ) : (
                                     <span className="inline-flex items-center rounded-full border border-black/10 bg-white px-2.5 py-1 typo-h6-medium text-gray-300">
@@ -646,9 +703,14 @@ const Accommodation = () => {
                               </div>
 
                               <div className="flex items-center justify-between gap-4">
-                                <p className={`m-0 min-w-0 flex-1 typo-body-bold ${isSelected ? 'text-white' : 'text-black'}`}>
-                                  {row.type}
-                                </p>
+                                <div className="min-w-0 flex-1">
+                                  <p className={`m-0 typo-body-bold ${isSelected ? 'text-white' : 'text-black'}`}>
+                                    {row.type}
+                                  </p>
+                                  <p className={`m-0 mt-1 typo-h6-medium ${isSelected ? 'text-white/70' : 'text-gray-500'}`}>
+                                    기준 인원(최대인원) {row.occupancy}
+                                  </p>
+                                </div>
 
                                 {selection ? (
                                   <p className={`m-0 shrink-0 typo-body-bold ${isSelected ? 'text-white' : 'text-black'}`}>
@@ -671,6 +733,9 @@ const Accommodation = () => {
                 <>
                   <p className="m-0 typo-h6-medium text-gray-500">
                     {mobileSelectedPricing.category} · {mobileSelectedPricing.type}
+                  </p>
+                  <p className="m-0 mt-1 typo-h6-medium text-gray-500">
+                    기준 인원(최대인원) {mobileSelectedPricing.occupancy}
                   </p>
                   <p className="m-0 mt-1 typo-body-bold text-black">
                     {mobileSelectedPricing.dateDisplayLabel} · {mobileSelectedPricing.price}
@@ -709,6 +774,9 @@ const Accommodation = () => {
                 <p className="m-0 typo-h6-medium text-gray-500">
                   {selectedPricing.category} · {selectedPricing.type}
                 </p>
+                <p className="m-0 mt-1 typo-h6-medium text-gray-500">
+                  기준 인원(최대인원) {selectedPricing.occupancy}
+                </p>
                 <p className="m-0 mt-1 typo-body-bold text-black">
                   {selectedPricing.dateLabel} · {selectedPricing.price}
                 </p>
@@ -741,34 +809,43 @@ const Accommodation = () => {
         </div>
       </div>
 
-      {/* Policies Section */}
+      {/* Policies Section Copy */}
       <section className="layout-pad-bottom">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-0 lg:gap-4 mb-12 border-b border-black/10 pb-[15px]">
           <div>
-            <h2 className="heading-ko">이용 규정</h2>
+            <h2 className="heading-ko">숙박 안내사항</h2>
           </div>
           <p className="m-0 mt-6 lg:mt-0 typo-body-medium text-left lg:text-right">
             숙박권 구매 전 반드시 확인해 주세요.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           <div className="bg-gray-50 rounded-[2rem] p-8 md:p-12 border border-black/5 font-[var(--font-body)] text-[var(--fs-body)] leading-[var(--leading-default)] text-gray-500">
-            <h6 className="mb-6 heading-ko">숙박 필독사항</h6>
-            <ul className="space-y-4 leading-relaxed font-medium">
-              <li className="flex gap-3">
-                <span className="text-black mt-1">•</span>
-                <span><strong className="text-black">빵트레일런 참가권을 구매해야만</strong> 숙박권 신청이 가능합니다.</span>
+            <ul className="list-disc space-y-4 pl-6 leading-relaxed font-medium marker:text-black">
+              <li>
+                <span className="text-[#F97316]">빵트레일런 참가권 구매자만 숙박권 구매가 가능합니다.</span>
               </li>
-              <li className="flex gap-3">
-                <span className="text-black mt-1">•</span>
-                <span>예약한 숙소는 빵트레일런 참가권을 구매하지 않은 가족 및 지인들도 함께 숙박이 가능합니다.</span>
-              </li>
+              <li>예약한 숙소는 빵트레일런 참가권을 구매하지 않은 가족 및 지인들도 함께 숙박이 가능합니다.</li>
+              <li>객실별 상세 내용은 객실별 상세페이지에서 확인이 가능합니다.</li>
             </ul>
           </div>
+        </div>
+      </section>
 
+      {/* Policies Section */}
+      <section className="layout-pad-bottom">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-0 lg:gap-4 mb-12 border-b border-black/10 pb-[15px]">
+          <div>
+            <h2 className="heading-ko">취소 및 환불 규정</h2>
+          </div>
+          <p className="m-0 mt-6 lg:mt-0 typo-body-medium text-left lg:text-right">
+            예약 전 취소 및 환불 기준을 확인해 주세요.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6">
           <div className="bg-gray-50 rounded-[2rem] p-8 md:p-12 border border-black/5 font-[var(--font-body)] text-[var(--fs-body)] leading-[var(--leading-default)] text-gray-500">
-            <h6 className="mb-6 heading-ko">취소 및 환불 규정</h6>
             <div className="overflow-hidden">
               <table className="w-full table-fixed font-[var(--font-body)] text-[var(--fs-body)] leading-[var(--leading-default)]">
                 <thead className="border-b border-black/10 text-black">
@@ -816,7 +893,7 @@ const Accommodation = () => {
             <div className="py-8 border-t border-black/10 flex flex-col md:flex-row gap-4 md:gap-12">
               <div className="md:w-1/3 mt-1"><h6 className="text-gray-400 m-0 heading-ko">체크인 / 체크아웃</h6></div>
               <div className="md:w-2/3">
-                <p className="typo-h6-medium text-gray-500 mb-2">마운틴콘도 / 힐콘도 / 그랜드호텔</p>
+                <p className="typo-h6-medium text-gray-500 mb-2">마운틴 콘도 / 힐 콘도 / 컨벤션 호텔</p>
                 <h3 className="typo-h4 m-0 heading-ko">오후 3시 <span className="text-gray-300 mx-2">→</span> 오전 11시</h3>
               </div>
             </div>
@@ -826,7 +903,7 @@ const Accommodation = () => {
               <div className="md:w-1/3 mt-1"><h6 className="text-gray-400 m-0 heading-ko">객실 안내 사항</h6></div>
               <div className="md:w-2/3 space-y-10">
                 <div>
-                  <h4 className="mb-4 heading-ko">힐콘도 / 마운틴콘도</h4>
+                  <h4 className="mb-4 heading-ko">힐 콘도 / 마운틴 콘도</h4>
                   <ul className="space-y-3 text-gray-500 leading-relaxed typo-body-medium">
                     <li className="flex gap-3"><span className="text-gray-300 mt-0.5">•</span><span>퇴실 전 객실점검(주방정비, 쓰레기 분리배출)을 해주시고, 퇴실 시 프런트에서 체크아웃 해주시기 바랍니다.</span></li>
                     <li className="flex gap-3"><span className="text-gray-300 mt-0.5">•</span><span>숙박 중 파손된 물건은 리조트 측에서 확인 후 비용이 청구됩니다.</span></li>
@@ -840,7 +917,7 @@ const Accommodation = () => {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="mb-4 heading-ko">그랜드호텔</h4>
+                  <h4 className="mb-4 heading-ko">컨벤션 호텔</h4>
                   <ul className="space-y-3 text-gray-500 leading-relaxed typo-body-medium">
                     <li className="flex gap-3"><span className="text-gray-300 mt-0.5">•</span><span>퇴실 전 객실점검(주방정비, 쓰레기 분리배출)을 해주시고, 퇴실 시 프런트에서 체크아웃 해주시기 바랍니다.</span></li>
                     <li className="flex gap-3"><span className="text-gray-300 mt-0.5">•</span><span>수건은 1박 투숙시 객실 정원 수 만큼 제공됩니다.</span></li>
@@ -858,7 +935,7 @@ const Accommodation = () => {
               <div className="md:w-1/3 mt-1"><h6 className="text-gray-400 m-0 heading-ko">객실 비품</h6></div>
               <div className="md:w-2/3 space-y-10">
                 <div>
-                  <h4 className="mb-4 heading-ko">힐콘도 / 마운틴콘도</h4>
+                  <h4 className="mb-4 heading-ko">힐 콘도 / 마운틴 콘도</h4>
                   <ul className="space-y-3 text-gray-500 leading-relaxed typo-body-medium">
                     <li className="flex gap-3"><span className="text-gray-300 mt-0.5">•</span><span>가전류 TV, 전화기, 냉장고, 에어컨, 인덕션레인지(전용냄비, 프라이팬 사용), 헤어드라이기(머리빗X), 전기밥솥, 커피포트</span></li>
                     <li className="flex gap-3"><span className="text-gray-300 mt-0.5">•</span><span>식기류 투숙정원 기준 - 밥공기, 국그릇, 커피잔, 물컵, 숟가락, 젓가락 기본세팅 - 국자, 가위, 주걱, 식도, 과도, 도마, 믹싱볼, 접시류, 냄비받침, 주방세제, 행주, 쟁반, 뒤집개</span></li>
@@ -867,7 +944,7 @@ const Accommodation = () => {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="mb-4 heading-ko">그랜드호텔</h4>
+                  <h4 className="mb-4 heading-ko">컨벤션 호텔</h4>
                   <ul className="space-y-3 text-gray-500 leading-relaxed typo-body-medium">
                     <li className="flex gap-3"><span className="text-gray-300 mt-0.5">•</span><span>타올류 - 바스타올, 페이스타올, 핸드타올, 가운</span></li>
                     <li className="flex gap-3"><span className="text-gray-300 mt-0.5">•</span><span>비품류 - TV, 미니냉장고, 미니바(유료), 금고, 전화기, 전기포트, 휴대폰 충전기, 무료생수(2병), 커피, 티, 헤어드라이어, 비데</span></li>
@@ -887,29 +964,40 @@ const Accommodation = () => {
       <section className="layout-pad-bottom">
         {/* Toggle */}
         <div className="flex justify-center mb-[30px] pt-4">
-            <div className="bg-gray-100 p-1 rounded-full inline-flex border border-black/5">
+            <div className="bg-gray-100 p-1 rounded-full inline-flex flex-wrap justify-center border border-black/5">
               <button
                 onClick={() => setMapType('hill')}
                 className={`px-8 py-2.5 rounded-full typo-h6-medium transition-colors ${mapType === 'hill' ? 'bg-white text-black shadow-sm' : 'text-gray-500 hover:text-black'}`}
               >
-                힐콘도
+                힐 콘도
               </button>
               <button
                 onClick={() => setMapType('mountain')}
                 className={`px-8 py-2.5 rounded-full typo-h6-medium transition-colors ${mapType === 'mountain' ? 'bg-white text-black shadow-sm' : 'text-gray-500 hover:text-black'}`}
               >
-                마운틴콘도
+                마운틴 콘도
+              </button>
+              <button
+                onClick={() => setMapType('valley')}
+                className={`px-8 py-2.5 rounded-full typo-h6-medium transition-colors ${mapType === 'valley' ? 'bg-white text-black shadow-sm' : 'text-gray-500 hover:text-black'}`}
+              >
+                밸리 콘도
               </button>
               <button
                 onClick={() => setMapType('grand')}
                 className={`px-8 py-2.5 rounded-full typo-h6-medium transition-colors ${mapType === 'grand' ? 'bg-white text-black shadow-sm' : 'text-gray-500 hover:text-black'}`}
               >
-                그랜드호텔
+                컨벤션 호텔
               </button>
             </div>
           </div>
 
           <h2 className="text-center mb-[15px] heading-ko">숙소 위치</h2>
+          <p className="m-0 text-center typo-body-medium text-[#181818]">
+            하이원 힐 콘도, 밸리 콘도 숙박 시, 빵트레일런 운영 시간 동안에 상시 운영되는 곤돌라를 무료로 이용할 수 있습니다.
+            <br />
+            (이동 소요시간 약 10분)
+          </p>
           
           <div className="flex flex-col gap-6">
           {/* Map Placeholder */}

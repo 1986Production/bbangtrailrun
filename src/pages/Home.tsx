@@ -362,7 +362,7 @@ const HomeEventIntroSection = () => (
       href="/#services-sections"
       className="group inline-flex items-center justify-center gap-2 mt-10 rounded-full border border-black/10 bg-gray-100 px-8 py-3 text-[var(--text-primary)] typo-h6-medium transition-colors hover:bg-black hover:text-[var(--color-key-lime)] hover:border-black"
     >
-      <span className="text-current">참가신청</span>
+      <span className="text-current">참가권</span>
       <ArrowRight
         size={16}
         className="text-current transition-transform group-hover:translate-x-1"

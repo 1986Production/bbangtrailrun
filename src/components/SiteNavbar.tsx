@@ -8,9 +8,9 @@ import ThemeToggle from "@/src/components/ThemeToggle";
 
 const navLinks = [
   { href: "/overview", label: "대회 개요" },
+  { href: "/course", label: "코스" },
   { href: "/souvenirs", label: "기념품" },
-  { href: "/course", label: "코스안내" },
-  { href: "/registration", label: "참가신청" },
+  { href: "/registration", label: "참가권" },
   { href: "/accommodation", label: "숙박권" },
   { href: "/notice", label: "공지사항" },
   { href: "/archive", label: "보관용" },
