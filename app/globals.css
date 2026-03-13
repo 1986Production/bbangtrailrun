@@ -72,6 +72,13 @@
   --text-primary: #181818;
   --text-body: #525252;
   --text-muted: #9ca3af;
+  --foreground: var(--text-primary);
+  --muted: var(--text-body);
+  --muted-2: var(--text-muted);
+  --line: rgba(24, 24, 24, 0.08);
+  --accent: var(--color-key-lime);
+  --content-max: 72rem;
+  --radius-lg: 1.75rem;
   --fs-h1: clamp(calc(var(--font-scale) * 3), 7vw, calc(var(--font-scale) * 6));
   --fs-h2: clamp(calc(var(--font-scale) * 2.25), 5vw, calc(var(--font-scale) * 4));
   --fs-h3: clamp(calc(var(--font-scale) * 1.75), 3vw, calc(var(--font-scale) * 2.25));

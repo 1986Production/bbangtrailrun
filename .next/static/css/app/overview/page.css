@@ -1,0 +1,270 @@
+/*!***************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./src/components/timetable-section.module.css ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************/
+.timetable-section_section__WAtJp {
+  padding-inline: var(--section-inline);
+  padding-bottom: var(--section-block-main);
+}
+
+.timetable-section_shell__oVcC5 {
+  width: min(100%, var(--content-max));
+  margin: 0 auto;
+}
+
+.timetable-section_panel__QWFSi {
+  padding: 0;
+}
+
+.timetable-section_intro__Fxf_L {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.timetable-section_eyebrow__7SKyy {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+}
+
+.timetable-section_heading__VwQYA {
+  max-width: 32rem;
+  margin-inline: auto;
+}
+
+.timetable-section_introBody__wU_Wm {
+  max-width: 32rem;
+  margin: 0.75rem auto 0;
+  color: var(--foreground);
+}
+
+.timetable-section_days__WhBhe {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timetable-section_notice__X_fMR {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  width: fit-content;
+  margin: 1.5rem 0 0 auto;
+  text-align: right;
+  color: var(--muted-2);
+}
+
+.timetable-section_noticeIcon__kq_Wi {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.timetable-section_dayBlock__o_Zuc:last-child {
+  margin-bottom: 0;
+}
+
+.timetable-section_fridayDayBlock__oFa42 {
+  margin-bottom: 60px;
+}
+
+.timetable-section_dayHeader__lKYVO {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.timetable-section_dayDot__Grdbx {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.timetable-section_dayDotDark__uUaut {
+  background: #111111;
+}
+
+.timetable-section_dayDotAccent__MlF6c {
+  background: var(--accent);
+}
+
+.timetable-section_timeline__xMq6v {
+  --hour-label-width: 5.5rem;
+  --hour-label-padding-right: 0.75rem;
+  --hour-line-card-gap: 1.25rem;
+  --event-line-gap: 0.375rem;
+  --events-inline-start: calc(
+    var(--hour-label-width) + var(--hour-label-padding-right) + var(--hour-line-card-gap)
+  );
+  position: relative;
+  margin-top: 1.5rem;
+}
+
+.timetable-section_hourMarker__LRXG6 {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.timetable-section_hourLabel__83Pbh {
+  width: var(--hour-label-width);
+  padding-right: var(--hour-label-padding-right);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.35rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.timetable-section_hourMeridiem__GJnHQ {
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted-2);
+}
+
+.timetable-section_hourValue__pbAyL {
+  display: inline-flex;
+  align-items: center;
+  color: var(--foreground);
+}
+
+.timetable-section_hourLine__l5yMB {
+  flex: 1;
+  border-top: 1px solid var(--line);
+}
+
+.timetable-section_eventsLayer__HE6_E {
+  position: absolute;
+  inset: 0 0 0 var(--events-inline-start);
+}
+
+.timetable-section_eventSlot__I2_F0 {
+  position: absolute;
+  box-sizing: border-box;
+  padding-block: var(--event-line-gap);
+  transition: transform 180ms ease;
+  z-index: 1;
+}
+
+.timetable-section_eventSlot__I2_F0:hover {
+  transform: translateY(-0.25rem);
+}
+
+.timetable-section_eventSlotFull__m8hv6 {
+  left: 0;
+  right: 0;
+}
+
+.timetable-section_eventSlotLeft__iqvgq {
+  left: 0;
+  right: 50%;
+  padding-right: 0.5rem;
+}
+
+.timetable-section_eventSlotRight__9UQzy {
+  left: 50%;
+  right: 0;
+  padding-left: 0.5rem;
+}
+
+.timetable-section_card__yEQ5W {
+  height: 100%;
+  box-sizing: border-box;
+  padding: 1.25rem;
+  border: 1px solid var(--card-border);
+  border-radius: 1.5rem;
+  background: var(--card-bg);
+  color: var(--card-title);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-shadow: 0 0.75rem 2rem rgba(17, 17, 17, 0.04);
+}
+
+.timetable-section_cardBody__31zIx {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 0;
+  width: 100%;
+}
+
+.timetable-section_cardTitle__jrRrR {
+  color: var(--card-title);
+  margin: 0;
+}
+
+.timetable-section_cardTime__lpx_F {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  margin: 0;
+  color: var(--card-text);
+}
+
+.timetable-section_clock__WdNvh {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+  opacity: 0.72;
+}
+
+.timetable-section_cardDescription__wC1AJ {
+  margin: 0;
+  padding-top: 0;
+  color: var(--card-desc);
+  white-space: pre-line;
+}
+
+@media (min-width: 768px) {
+  .timetable-section_timeline__xMq6v {
+    --hour-label-width: 6.5rem;
+    --hour-label-padding-right: 1rem;
+    --hour-line-card-gap: 1.5rem;
+    --event-line-gap: 0.5rem;
+  }
+
+  .timetable-section_hourLabel__83Pbh {
+    width: var(--hour-label-width);
+    padding-right: var(--hour-label-padding-right);
+  }
+
+  .timetable-section_eventsLayer__HE6_E {
+    left: var(--events-inline-start);
+  }
+
+  .timetable-section_card__yEQ5W {
+    padding: 1.5rem;
+  }
+
+  .timetable-section_cardBody__31zIx {
+    gap: 0.55rem;
+  }
+
+  .timetable-section_cardTitle__jrRrR {
+    margin: 0;
+  }
+
+  .timetable-section_cardTime__lpx_F {
+    align-items: center;
+    margin: 0;
+  }
+
+  .timetable-section_cardDescription__wC1AJ {
+    padding-top: 0;
+  }
+}
+
